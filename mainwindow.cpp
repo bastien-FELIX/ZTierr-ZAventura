@@ -1,3 +1,4 @@
+#include <QFileDialog>
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
@@ -12,3 +13,11 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::on_pushButton_clicked()
+{
+    QString Zfilename = QFileDialog::getOpenFileName(this, "ZOpen Ze Zfile");
+
+    ui->lineEdit->setText(Zfilename);
+}
+
