@@ -17,7 +17,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     QString Zfilename = QFileDialog::getOpenFileName(this, "ZOpen Ze Zfile");
-
-    ui->lineEdit->setText(Zfilename);
+    QString Ztext = "<img src=\"" + Zfilename + "\" width=\"400\" height=\"500\" />";
+    ui->Django->setText(Ztext);
 }
 
