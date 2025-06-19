@@ -113,3 +113,97 @@ void MainWindow::on_btPlusIntro_clicked()
 
     introLayout->addLayout(gl2,line+1,0);
 }
+
+QString MainWindow::ZimageToHtml() {
+    return "<img src=\"" + Zimage + "\" width=\"400\" height=\"500\" />";
+}
+
+void MainWindow::on_actionExporter_triggered()
+{
+    QString Ztitle = ui->lineEdit->displayText();
+    QString Zcity = ui->lineEdit_2->displayText();
+    QString Zdept = ui->lineEdit_3->displayText();
+    QString Ztime = ui->lineEdit_4->displayText();
+    QString Zdifficulty = QString::number(ui->spinBox->value());
+    QString Zlength = ui->lineEdit_5->displayText();
+
+    QFile Zfile(QFileDialog::getOpenFileName(this, "ZOpen Ze Zfile"));
+
+    if (!Zfile.open(QIODevice::WriteOnly | QFile::Text)) {
+        QMessageBox::warning(this, "Warning", "Le Z a volé le fichier: " + Zfile.errorString());
+        return;
+    }
+
+    QTextStream Zstream(&Zfile);
+
+    Zstream << Ztitle + "\n" + Zcity + "\n" + Zdept + "\n" + Zdifficulty + "\n" + Ztime + "\n" + Zlength + "\n" + Zimage;
+
+    Zfile.close();
+}
+
+
+void MainWindow::on_actionImporter_triggered()
+{
+    QFile Zfile(QFileDialog::getOpenFileName(this, "ZOpen Ze Zfile"));
+
+    if (!Zfile.open(QIODevice::ReadOnly | QFile::Text)) {
+        QMessageBox::warning(this, "Warning", "Le Z a volé le fichier: " + Zfile.errorString());
+        return;
+    }
+
+    QTextStream Zstream(&Zfile);
+    QString line;
+
+
+    for (int i = 0; i < 7; i++) {
+        line = Zstream.readLine();
+
+        switch(i) {
+        case 0:
+            ui->lineEdit->setText(line);
+        case 1:
+            ui->lineEdit_2->setText(line);
+        case 2:
+            ui->lineEdit_3->setText(line);
+        case 3:
+            ui->spinBox->setValue(line.toInt());
+        case 4:
+            ui->lineEdit_4->setText(line);
+        case 5:
+            ui->lineEdit_5->setText(line);
+        case 6:
+            Zimage = line;
+            ui->Django->setText(ZimageToHtml());
+        }
+    }
+
+    Zfile.close();
+}
+
+
+void MainWindow::on_actionExporter_en_html_triggered()
+{
+    QString Ztitle = ui->lineEdit->displayText();
+    QString Zcity = ui->lineEdit_2->displayText();
+    QString Zdept = ui->lineEdit_3->displayText();
+    QString Ztime = ui->lineEdit_4->displayText();
+    QString Zdifficulty = QString::number(ui->spinBox->value());
+    QString Zlength = ui->lineEdit_5->displayText();
+
+    QFile Zfile(QFileDialog::getOpenFileName(this, "ZOpen Ze Zfile"));
+
+    if (!Zfile.open(QIODevice::WriteOnly | QFile::Text)) {
+        QMessageBox::warning(this, "Warning", "Le Z a volé le fichier: " + Zfile.errorString());
+        return;
+    }
+
+    QTextStream Zstream(&Zfile);
+
+    Zstream << "<!DOCTYPE html> <html> <head> <title> " + Ztitle + "</title> </head> <body>" + "\n";
+
+    Zstream << Ztitle + " " + Zcity + "\n" + Zdept + "\n" + Zdifficulty + "\n" + Ztime + "\n" + Zlength + "\n" + ZimageToHtml();
+
+    Zstream << "\n</body> </html>";
+
+    Zfile.close();
+}
