@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tabPresentation">
        <attribute name="title">
@@ -291,8 +291,32 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionImporter"/>
+    <addaction name="actionExporter"/>
+    <addaction name="actionExporter_en_html"/>
+   </widget>
+   <addaction name="menuFile"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionImporter">
+   <property name="text">
+    <string>Importer</string>
+   </property>
+  </action>
+  <action name="actionExporter">
+   <property name="text">
+    <string>Exporter</string>
+   </property>
+  </action>
+  <action name="actionExporter_en_html">
+   <property name="text">
+    <string>Exporter en html</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
