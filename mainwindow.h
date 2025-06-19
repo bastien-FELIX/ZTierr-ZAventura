@@ -2,6 +2,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QComboBox>
+#include <QTextEdit>
+#include <QGridLayout>
+#include <QScrollArea>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
