@@ -19,12 +19,15 @@ public:
     std::vector<QComboBox*> vectComboIntro;
     std::vector<QTextEdit*> vectTextIntro;
     QGridLayout* introLayout;
-
+    QString ZimageToHtml();
 
 private slots:
     void on_pushButton_clicked();
-
     void on_btPlusIntro_clicked();
+
+    void on_actionExporter_triggered();
+    void on_actionImporter_triggered();
+    void on_actionExporter_en_html_triggered();
 
 private:
     Ui::MainWindow *ui;
