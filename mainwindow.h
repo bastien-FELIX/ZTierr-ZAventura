@@ -22,5 +22,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QString Zimage;
 };
 #endif // MAINWINDOW_H
