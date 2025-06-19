@@ -17,6 +17,8 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        imagelabel.cpp
+        imagelabel.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -68,3 +70,5 @@ install(TARGETS Zerra_Zaventura_Zeditor
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(Zerra_Zaventura_Zeditor)
 endif()
+
+target_include_directories(Zerra_Zaventura_Zeditor PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

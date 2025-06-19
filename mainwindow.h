@@ -2,6 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTextEdit>
+#include <QComboBox>
+#include <QScrollArea>
+#include <QGridLayout>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,8 +26,6 @@ public:
 
 
 private slots:
-    void on_pushButton_clicked();
-
     void on_btPlusIntro_clicked();
 
 private:

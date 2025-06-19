@@ -1,0 +1,9 @@
+/home/joachim/ZTierr-ZAventura/build/Desktop-Debug/CMakeFiles/Zerra_Zaventura_Zeditor.dir
+/home/joachim/ZTierr-ZAventura/build/Desktop-Debug/CMakeFiles/edit_cache.dir
+/home/joachim/ZTierr-ZAventura/build/Desktop-Debug/CMakeFiles/rebuild_cache.dir
+/home/joachim/ZTierr-ZAventura/build/Desktop-Debug/CMakeFiles/list_install_components.dir
+/home/joachim/ZTierr-ZAventura/build/Desktop-Debug/CMakeFiles/install.dir
+/home/joachim/ZTierr-ZAventura/build/Desktop-Debug/CMakeFiles/install/local.dir
+/home/joachim/ZTierr-ZAventura/build/Desktop-Debug/CMakeFiles/install/strip.dir
+/home/joachim/ZTierr-ZAventura/build/Desktop-Debug/CMakeFiles/Zerra_Zaventura_Zeditor_autogen_timestamp_deps.dir
+/home/joachim/ZTierr-ZAventura/build/Desktop-Debug/CMakeFiles/Zerra_Zaventura_Zeditor_autogen.dir
