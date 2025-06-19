@@ -16,6 +16,10 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    std::vector<QComboBox*> vectComboIntro;
+    std::vector<QTextEdit*> vectTextIntro;
+    QGridLayout* introLayout;
+
 
 private slots:
     void on_pushButton_clicked();
