@@ -1,8 +1,4 @@
 #include "mainwindow.h"
-#include <QFileDialog>
-#include <QMessageBox>
-#include <QScrollArea>
-#include <QSizePolicy>
 #include "./ui_mainwindow.h"
 #include "QLabel"
 #include "QLayoutItem"
@@ -28,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     gl->addWidget(l, 0, 0);
     gl->addWidget(cb, 0, 1);
     gl->addItem(sp, 0, 2);
+    cb->addItem("Le Z");
 
     vectComboIntro.push_back(cb);
     vectTextIntro.push_back(te);
@@ -103,6 +100,10 @@ void MainWindow::on_btPlusIntro_clicked()
     gl->addWidget(cb, 0, 1);
     gl->addItem(sp, 0, 2);
 
+    for (int i = 0; i < vectComboIntro[0]->count(); i++) {
+        cb->addItem(vectComboIntro[0]->itemText(i));
+    }
+
     vectComboIntro.push_back(cb);
     vectTextIntro.push_back(te);
 
@@ -122,8 +123,7 @@ QString MainWindow::ZimageToHtml()
 
 void MainWindow::on_actionExporter_triggered()
 {
-    QString fileName = QFileDialog::getSaveFileName(this,
-                                                    tr("Open File"), QDir::currentPath());
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Open File"), QDir::currentPath());
     if (!fileName.isEmpty()) {
         QFile saveFile(fileName);
 
@@ -168,9 +168,8 @@ void MainWindow::on_actionExporter_en_html_triggered()
 
     Zstream << "</h2>";
 
-    Zstream << "<h2>Durée : " << Ztime<< "h</h2>";
+    Zstream << "<h2>Durée : " << Ztime << "h</h2>";
     Zstream << "<h2>Longueur : " << Zlength << "km</h2>";
-
 
     Zstream << "<h1> Intro </h1>";
 
@@ -181,7 +180,6 @@ void MainWindow::on_actionExporter_en_html_triggered()
         Zstream << "<p>" + vectTextIntro[i]->toPlainText() + "</p>";
     }
 
-
     // about
 
     Zstream << "<h1>A propos</h1>";
@@ -191,7 +189,8 @@ void MainWindow::on_actionExporter_en_html_triggered()
     Zstream << "<h2>Code postal & Ville : " + ui->lineEdit_ville->displayText() + "</h2>";
     Zstream << "<h2>Num. téléphone : " + ui->lineEdit_tel->displayText() + "</h2>";
     Zstream << "<h2>Adresse e-mail : " + ui->lineEdit_mail->displayText() + "</h2>";
-    Zstream << "<h2>Site web : <a href=\"" + ui->lineEdit_web->displayText() + "\">" + ui->lineEdit_web->displayText() + "</a> </h2>";
+    Zstream << "<h2>Site web : <a href=\"" + ui->lineEdit_web->displayText() + "\">"
+                   + ui->lineEdit_web->displayText() + "</a> </h2>";
 
     Zstream << "\n</body> </html>\n\n";
     Zfile.close();
@@ -227,8 +226,7 @@ void MainWindow::fromJson(const QJsonObject &json)
 
 void MainWindow::loadSave()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,
-                                                    tr("Open File"), QDir::currentPath());
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::currentPath());
     if (!fileName.isEmpty()) {
         QFile loadFile(fileName);
         if (!loadFile.open(QIODevice::ReadOnly)) {
@@ -243,4 +241,30 @@ void MainWindow::loadSave()
 void MainWindow::on_actionImporter_triggered()
 {
     loadSave();
+}
+
+void MainWindow::on_actionPersonnage_triggered()
+{
+    bool ok;
+    QString text = QInputDialog::getText(this, tr("Le Z demande une nouvelle victime"), tr("Entrez zun nom de personnage"), QLineEdit::Normal, "", &ok);
+    if (ok && !text.isEmpty())
+    {
+        for (auto elem : vectComboIntro) {
+            elem->addItem(text);
+        }
+    }
+}
+
+void MainWindow::closeEvent(QCloseEvent *event) {
+    QMessageBox::StandardButton resBtn = QMessageBox::question(
+        this, tr("Le Z te salut"),
+        tr("Le Z te remercie pour tes services"),
+        QMessageBox::Yes | QMessageBox::Yes,
+        QMessageBox::Yes);
+
+    if (resBtn == QMessageBox::Yes) {
+        event->accept();
+    } else {
+        event->ignore();
+    }
 }
