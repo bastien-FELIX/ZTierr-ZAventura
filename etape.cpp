@@ -67,6 +67,7 @@ void Etape::addDialog()
 {
     QLabel *l1 = new QLabel("Icone(Qui parle?)");
     QComboBox *cb = new QComboBox();
+    vectcombo.push_back(cb);
     QSpacerItem *sp = new QSpacerItem(0, 0, QSizePolicy::Expanding);
 
     QGridLayout *g1 = new QGridLayout();

@@ -197,21 +197,22 @@ void MainWindow::addPerso(QString t)
             elem->addItem(t);
         }
     }
-    /********************* TO ADD ITEMSTO THE QCOMBOBOX OF DIALOGS IN ETAPES, NEED DEBUG *********************/
-    // for (Etape* etape : vectEtapes){
-    //     for(QGridLayout* g: etape->vectgrid){
-    //         QComboBox* elem= static_cast<QComboBox*> (static_cast<QGridLayout*>( g->itemAt(0))->itemAt(1));
-    //         bool in = false;
-    //         for (int i = 0; i < elem->count(); i++) {
-    //             if (elem->itemText(i) == t) {
-    //                 in = true;
-    //             }
-    //         }
-    //         if (!in) {
-    //             elem->addItem(t);
-    //         }
-    //     }
-    // }
+
+    for (Etape* etape : vectEtapes){
+        for(QComboBox* elem: etape->vectcombo){
+            bool in=false;
+            for (int i = 0; i < elem->count(); i++) {
+                if (elem->itemText(i) == t) {
+                    in = true;
+                }
+            }
+            if (!in) {
+                elem->addItem(t);
+            }
+
+
+        }
+    }
 }
 
 QJsonObject MainWindow::toJson() const
@@ -352,9 +353,34 @@ void MainWindow::on_push_addDialogEtape()
     Etape *etape = mapbt[s];
 
     etape->addDialog();
+
+
     etape->build();
 
     vectEtapes.push_back(etape);
+
+    if (vectComboIntro.size() > 0) {
+
+
+        for(QComboBox* cb : etape->vectcombo ){
+            for (int i = 0; i < vectComboIntro[0]->count(); i++) {
+                bool v=true;
+                for(int j=0;j<cb->count();j++){
+                    if(cb->itemText(j)==vectComboIntro[0]->itemText(i)){
+                        v=false;
+                    }
+
+                }
+                if(v){
+                    cb->addItem(vectComboIntro[0]->itemText(i));
+                }
+            }
+        }
+
+
+
+
+    }
 
     buildEtape();
 }

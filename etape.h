@@ -19,6 +19,7 @@ public:
     QGridLayout *layoutbt;
     void build();
     void addDialog();
+    std::vector<QComboBox*> vectcombo;
 };
 
 #endif // ETAPE_H
