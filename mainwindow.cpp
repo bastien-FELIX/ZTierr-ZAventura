@@ -372,3 +372,127 @@ void MainWindow::closeEvent(QCloseEvent *event) {
         event->ignore();
     }
 }
+
+
+void MainWindow::on_push_addDialogEtape()
+{
+
+
+    QObject* src=sender();
+    QPushButton* s=static_cast<QPushButton*>(src);
+    Etape* etape=mapbt[s];
+
+        etape->addDialog();
+        etape->build();
+
+        vectEtapes.push_back(etape);
+
+        buildEtape();
+
+}
+
+
+void MainWindow::on_pushButtonAddEtape_clicked()
+{
+
+    QPushButton *bt = new QPushButton("Ajouter dialogue");
+
+    Etape *e=new Etape(bt);
+
+    mapbt.insert(bt,e);
+    connect(bt, &QPushButton::clicked, this, &MainWindow::on_push_addDialogEtape);
+
+    vectEtapes.push_back(e);
+
+
+
+    buildEtape();
+
+
+
+
+
+
+
+
+
+
+    /****************** OLD VERSION, ARCHIVE (DONT WORK & UNREADABLE) ******************/
+   //  int blockCount = etapesLayout->rowCount() / 5;
+   //  int baseRow = blockCount * 5;
+
+
+   //  QLabel *le = new QLabel("Titre : ");
+   //  QLineEdit *t = new QLineEdit();
+   //  QGridLayout *titleLayout = new QGridLayout();
+   //  titleLayout->addWidget(le, 0, 0);
+   //  titleLayout->addWidget(t, 0, 1);
+
+
+   //  QComboBox *comboNS = new QComboBox();
+   //  QLineEdit *lncoordNS = new QLineEdit();
+   //  QComboBox *comboEO = new QComboBox();
+   //  QLineEdit *lncoordEO = new QLineEdit();
+   //  QGridLayout *coordLayout = new QGridLayout();
+   //  coordLayout->addWidget(comboNS, 0, 0);
+   //  coordLayout->addWidget(lncoordNS, 0, 1);
+   //  coordLayout->addWidget(comboEO, 0, 2);
+   //  coordLayout->addWidget(lncoordEO, 0, 3);
+
+
+   //  QLabel *letapedial = new QLabel("Icone (Qui parle ?)");
+   //  QComboBox *cbetapedial = new QComboBox();
+   //  QSpacerItem *spetapedial = new QSpacerItem(0, 0, QSizePolicy::Expanding);
+   //  QGridLayout *gletapedial = new QGridLayout();
+   //  gletapedial->addWidget(letapedial, 0, 0);
+   //  gletapedial->addWidget(cbetapedial, 0, 1);
+   //  gletapedial->addItem(spetapedial, 0, 2);
+
+
+   //  QLabel *letapedial2 = new QLabel("Dialogue :");
+   //  QTextEdit* teetapedial = new QTextEdit();
+   //  teetapedial->setMinimumHeight(100);
+   //  QGridLayout *gletapedial2 = new QGridLayout();
+   //  gletapedial2->addWidget(letapedial2, 0, 0);
+   //  gletapedial2->addWidget(teetapedial, 0, 1);
+
+
+   //  QPushButton *btAddDialog = new QPushButton("Ajouter un dialogue");
+   //  QPushButton *btAddQuestion = new QPushButton("Ajouter une question");
+   //  QHBoxLayout *btLayout = new QHBoxLayout();
+   //  btLayout->addWidget(btAddDialog);
+   //  btLayout->addWidget(btAddQuestion);
+   //  connect(btAddDialog, &QPushButton::clicked, this, &MainWindow::on_push_addDialogEtape);
+
+
+   //  etapesLayout->addLayout(titleLayout,    baseRow + 0, 0);
+   //  etapesLayout->addLayout(coordLayout,    baseRow + 1, 0);
+   //  etapesLayout->addLayout(gletapedial,    baseRow + 2, 0);
+   //  etapesLayout->addLayout(gletapedial2,   baseRow + 3, 0);
+   //  etapesLayout->addLayout(btLayout,       baseRow + 4, 0);
+
+
+   //  if (etapesLayout->parentWidget()) {
+   //      etapesLayout->parentWidget()->update();
+   //      etapesLayout->parentWidget()->adjustSize();
+   //  }
+}
+
+
+
+void MainWindow::buildEtape(){
+
+
+    for (int i=0;i<etapesLayout->count();i++){
+        etapesLayout->removeItem(etapesLayout->itemAt(i));
+    }
+
+
+
+    int i=0;
+    for(Etape* etape : vectEtapes){
+        etapesLayout->addLayout(etape->layout,i,0);
+        i++;
+    }
+
+}
