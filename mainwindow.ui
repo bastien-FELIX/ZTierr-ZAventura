@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tabPresentation">
        <attribute name="title">
@@ -302,7 +302,7 @@
      <x>0</x>
      <y>0</y>
      <width>1260</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -336,7 +336,7 @@
   <customwidget>
    <class>imageLabel</class>
    <extends>QLabel</extends>
-   <header>Imagelabel.h</header>
+   <header>imagelabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

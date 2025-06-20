@@ -1,0 +1,2 @@
+set(__QT_DEPLOY_TARGET_Zerra_Zaventura_Zeditor_FILE /home/joachim/ZTierr-ZAventura/build/Desktop-Debug/Zerra_Zaventura_Zeditor)
+set(__QT_DEPLOY_TARGET_Zerra_Zaventura_Zeditor_TYPE EXECUTABLE)

@@ -1,0 +1,10 @@
+# ninja log v6
+3	486	1750327201847135123	Zerra_Zaventura_Zeditor_autogen/timestamp	752dc8dcb715d8bf
+3	486	1750327201847135123	Zerra_Zaventura_Zeditor_autogen/mocs_compilation.cpp	752dc8dcb715d8bf
+3	486	1750327201847135123	/home/joachim/ZTierr-ZAventura/build/Desktop-Debug/Zerra_Zaventura_Zeditor_autogen/timestamp	752dc8dcb715d8bf
+3	486	1750327201847135123	/home/joachim/ZTierr-ZAventura/build/Desktop-Debug/Zerra_Zaventura_Zeditor_autogen/mocs_compilation.cpp	752dc8dcb715d8bf
+488	2405	1750327201859365557	CMakeFiles/Zerra_Zaventura_Zeditor.dir/imagelabel.cpp.o	265cb31cd2600e13
+488	2756	1750327201858135123	CMakeFiles/Zerra_Zaventura_Zeditor.dir/main.cpp.o	c4fee5c7dc5eedb
+487	2910	1750327201857372451	CMakeFiles/Zerra_Zaventura_Zeditor.dir/Zerra_Zaventura_Zeditor_autogen/mocs_compilation.cpp.o	a32ececd65dca8c4
+488	2996	1750327201859238236	CMakeFiles/Zerra_Zaventura_Zeditor.dir/mainwindow.cpp.o	d41dc8bf95f029d1
+2996	3215	1750327204366135154	Zerra_Zaventura_Zeditor	1e037ffcfe37228a
