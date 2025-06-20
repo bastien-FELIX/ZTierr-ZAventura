@@ -6,14 +6,12 @@
 #include <QSizePolicy>
 #include <QScrollArea>
 #include<QMessageBox>
-    #include <QJsonArray>
+#include <QJsonArray>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    setWindowIcon(QIcon("../../z.png"));
-
     /******************************************* INTRO TAB *******************************************/
     introLayout=new QGridLayout();
 
@@ -53,6 +51,7 @@ MainWindow::MainWindow(QWidget *parent)
     scrollArea->setWidgetResizable(true);
     scrollArea->setWidget(introWidget);
 
+
     /******************************************* ETAPES TAB *******************************************/
     etapesLayout=new QGridLayout();
 
@@ -67,15 +66,23 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->gridLayoutEtapes->addWidget(scrollAreaEtapes);
     ui->gridLayoutIntroDialogue->addWidget(scrollArea);
+
+
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+
     for(Etape* e : vectEtapes){
         delete e;
     }
+
 }
+
+
+
 
 
 
@@ -114,6 +121,11 @@ void MainWindow::on_btPlusIntro_clicked()
     introLayout->addLayout(gl2, line + 1, 0);
 }
 
+
+
+
+
+
 void MainWindow::on_actionExporter_triggered()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
@@ -129,6 +141,7 @@ void MainWindow::on_actionExporter_triggered()
         saveFile.write(QJsonDocument(json).toJson());
     }
 }
+
 
 void MainWindow::on_actionExporter_en_html_triggered()
 {
@@ -151,7 +164,7 @@ void MainWindow::on_actionExporter_en_html_triggered()
     Zstream << "<!DOCTYPE html> <html> <head> <title> " + Ztitle + "</title> </head> <body>\n";
 
     // infos parcours
-    
+
     Zstream << "<img src=\"" << ui->label_7->getPath() << "\" alt=\"image d'illustration\" width=\"10%\" />";
     Zstream << "<h2>Ville : " << Zcity << "</h2>";
     Zstream << "<h2>Département : " << Zdept << "</h2>";
@@ -191,6 +204,7 @@ void MainWindow::on_actionExporter_en_html_triggered()
     Zfile.close();
 }
 
+
 void MainWindow::addPerso(QString t) {
     for (auto elem : vectComboIntro) {
         bool in = false;
@@ -222,21 +236,8 @@ QJsonObject MainWindow::toJson() const
         tmp.append(elem->currentText());
     }
 
-    json["zcome"] = tmp;
-
-    tmp = QJsonArray();
-    for (auto elem: vectComboIntro) {
-        tmp.append(elem->currentText());
-    }
-
     json["zcomi"] = tmp;
 
-    tmp = QJsonArray();
-    for (auto elem: vectTextEtapes) {
-        tmp.append(elem->toPlainText() );
-    }
-
-    json["ztexe"] = tmp;
 
     tmp = QJsonArray();
     for (auto elem: vectTextIntro) {
@@ -247,6 +248,7 @@ QJsonObject MainWindow::toJson() const
 
     return json;
 }
+
 
 void MainWindow::fromJson(const QJsonObject &json)
 {
@@ -264,15 +266,7 @@ void MainWindow::fromJson(const QJsonObject &json)
     }
     vectTextIntro = std::vector<QTextEdit*>();
 
-    for (auto elem: vectTextEtapes) {
-        delete elem;
-    }
-    vectTextEtapes = std::vector<QTextEdit*>();
 
-    for (auto elem: vectComboEtapes) {
-        delete elem;
-    }
-    vectComboEtapes = std::vector<QComboBox*>();
 
     if (const QJsonValue v = json["ztitl"]; v.isString())
         ui->lineEdit->setText(v.toString());
@@ -292,17 +286,9 @@ void MainWindow::fromJson(const QJsonObject &json)
         ui->label_7->open();
     }
 
-    if (const QJsonValue v = json["zcome"]; v.isArray()){
-        //for (auto elem: v.toArray()) {
-        //    on_btPlusIntro_clicked();
-        //}
-    }
 
-    if (const QJsonValue v = json["ztexe"]; v.isArray()){
-        //for (auto elem: v.toArray()) {
-        //    on_btPlusIntro_clicked();
-        //}
-    }
+
+
 
     if (const QJsonValue v = json["zcomi"]; v.isArray()){
         int i = 0;
@@ -324,6 +310,8 @@ void MainWindow::fromJson(const QJsonObject &json)
 
 }
 
+
+
 void MainWindow::loadSave()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
@@ -338,6 +326,7 @@ void MainWindow::loadSave()
         fromJson(loadDoc.object());
     }
 }
+
 
 void MainWindow::on_actionImporter_triggered()
 {
@@ -361,10 +350,10 @@ void MainWindow::on_actionPersonnage_triggered()
 
 void MainWindow::closeEvent(QCloseEvent *event) {
     QMessageBox::StandardButton resBtn = QMessageBox::critical(this,
-                                tr("Le Z te salut"),
-                                tr("Le Z te remercie pour tes services.\nmplc"),
-                                QMessageBox::Ok | QMessageBox::Yes,
-                                QMessageBox::Yes);
+                                                               tr("Le Z te salut"),
+                                                               tr("Le Z te remercie pour tes services.\nmplc"),
+                                                               QMessageBox::Ok | QMessageBox::Yes,
+                                                               QMessageBox::Yes);
 
     if (resBtn == QMessageBox::Yes || resBtn == QMessageBox::Ok) {
         event->accept();
@@ -372,6 +361,8 @@ void MainWindow::closeEvent(QCloseEvent *event) {
         event->ignore();
     }
 }
+
+
 
 
 void MainWindow::on_push_addDialogEtape()
@@ -479,7 +470,6 @@ void MainWindow::on_pushButtonAddEtape_clicked()
 }
 
 
-
 void MainWindow::buildEtape(){
 
 
@@ -496,3 +486,8 @@ void MainWindow::buildEtape(){
     }
 
 }
+
+
+
+
+
