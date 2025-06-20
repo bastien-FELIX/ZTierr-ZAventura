@@ -2,6 +2,10 @@
 #include "./ui_mainwindow.h"
 #include "QLabel"
 #include "QLayoutItem"
+#include <QSizePolicy>
+#include <QScrollArea>
+#include<QMessageBox>
+#include <QJsonArray>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -123,7 +127,8 @@ QString MainWindow::ZimageToHtml()
 
 void MainWindow::on_actionExporter_triggered()
 {
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Open File"), QDir::currentPath());
+    QString fileName = QFileDialog::getSaveFileName(this,
+                                                    tr("Open File"), QDir::currentPath());
     if (!fileName.isEmpty()) {
         QFile saveFile(fileName);
 
@@ -155,9 +160,6 @@ void MainWindow::on_actionExporter_en_html_triggered()
     QTextStream Zstream(&Zfile);
 
     Zstream << "<!DOCTYPE html> <html> <head> <title> " + Ztitle + "</title> </head> <body>\n";
-
-    // infos parcours
-
     Zstream << "<h2>Ville : " << Zcity << "</h2>";
     Zstream << "<h2>Département : " << Zdept << "</h2>";
     Zstream << "<h2>Difficulté : ";
@@ -196,6 +198,8 @@ void MainWindow::on_actionExporter_en_html_triggered()
     Zfile.close();
 }
 
+    // infos parcours
+
 QJsonObject MainWindow::toJson() const
 {
     QJsonObject json;
@@ -205,11 +209,66 @@ QJsonObject MainWindow::toJson() const
     json["ztime"] = ui->lineEdit_4->displayText();
     json["zdiff"] = QString::number(ui->spinBox->value());
     json["zleng"] = ui->lineEdit_5->displayText();
+    json["zillu"] = ui->label_7->getPath();
+
+    QJsonArray tmp;
+
+    for (auto elem: vectComboIntro) {
+        tmp.append(elem->currentText());
+    }
+
+    json["zcome"] = tmp;
+
+    tmp = QJsonArray();
+    for (auto elem: vectComboIntro) {
+        tmp.append(elem->currentText());
+    }
+
+    json["zcomi"] = tmp;
+
+    tmp = QJsonArray();
+    for (auto elem: vectTextEtapes) {
+        tmp.append(elem->toPlainText() );
+    }
+
+    json["ztexe"] = tmp;
+
+    tmp = QJsonArray();
+    for (auto elem: vectTextIntro) {
+        tmp.append(elem->toPlainText() );
+    }
+
+    json["ztexi"] = tmp;
+
     return json;
 }
 
 void MainWindow::fromJson(const QJsonObject &json)
 {
+    for (auto elem: introLayout->children()) {
+        delete elem;
+    }
+
+    for (auto elem: vectComboIntro) {
+        delete elem;
+    }
+    vectComboIntro = std::vector<QComboBox*>();
+
+    for (auto elem: vectTextIntro) {
+        delete elem;
+    }
+    vectTextIntro = std::vector<QTextEdit*>();
+
+    for (auto elem: vectTextEtapes) {
+        delete elem;
+    }
+    vectTextEtapes = std::vector<QTextEdit*>();
+
+    for (auto elem: vectComboEtapes) {
+        delete elem;
+    }
+    vectComboEtapes = std::vector<QComboBox*>();
+
     if (const QJsonValue v = json["ztitl"]; v.isString())
         ui->lineEdit->setText(v.toString());
     if (const QJsonValue v = json["zcity"]; v.isString())
@@ -219,14 +278,49 @@ void MainWindow::fromJson(const QJsonObject &json)
     if (const QJsonValue v = json["ztime"]; v.isString())
         ui->lineEdit_4->setText(v.toString());
     if (const QJsonValue v = json["zdiff"]; v.isString())
-        ui->spinBox->setValue(v.toInt());
+        ui->spinBox->setValue(v.toString().toInt());
     if (const QJsonValue v = json["zleng"]; v.isString())
         ui->lineEdit_5->setText(v.toString());
+
+    if (const QJsonValue v = json["zillu"]; v.isString()){
+        ui->label_7->setPath(v.toString());
+        ui->label_7->open();
+    }
+
+    if (const QJsonValue v = json["zcome"]; v.isArray()){
+        //for (auto elem: v.toArray()) {
+        //    on_btPlusIntro_clicked();
+        //}
+    }
+
+    if (const QJsonValue v = json["ztexe"]; v.isArray()){
+        //for (auto elem: v.toArray()) {
+        //    on_btPlusIntro_clicked();
+        //}
+    }
+
+    if (const QJsonValue v = json["zcomi"]; v.isArray()){
+        int i = 0;
+        for (auto elem: v.toArray()) {
+            on_btPlusIntro_clicked();
+            vectComboIntro[i]->addItem(elem.toString());
+            i++;
+        }
+    }
+
+    if (const QJsonValue v = json["ztexi"]; v.isArray()){
+        int i = 0;
+        for (auto elem: v.toArray()) {
+            vectTextIntro[i]->setText(elem.toString());
+            i++;
+        }
+    }
 }
 
 void MainWindow::loadSave()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::currentPath());
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    tr("Open File"), QDir::currentPath());
     if (!fileName.isEmpty()) {
         QFile loadFile(fileName);
         if (!loadFile.open(QIODevice::ReadOnly)) {

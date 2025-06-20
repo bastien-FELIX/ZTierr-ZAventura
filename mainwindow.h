@@ -13,6 +13,7 @@
 #include <qgridlayout.h>
 #include <qtextedit.h>
 #include <vector>
+#include <QJsonObject>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
