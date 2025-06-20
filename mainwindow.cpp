@@ -229,6 +229,10 @@ QJsonObject MainWindow::toJson() const
 
 void MainWindow::fromJson(const QJsonObject &json)
 {
+    for (auto elem: introLayout->children()) {
+        delete elem;
+    }
+
     for (auto elem: vectComboIntro) {
         delete elem;
     }
