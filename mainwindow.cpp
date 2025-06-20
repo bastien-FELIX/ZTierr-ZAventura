@@ -11,6 +11,8 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    setWindowIcon(QIcon("../../z.png"));
+
     /******************************************* INTRO TAB *******************************************/
     introLayout = new QGridLayout();
 
@@ -160,7 +162,7 @@ void MainWindow::on_actionExporter_en_html_triggered()
 
     // infos parcours
     
-    Zstream << "<img href=\"" << ui->label_7->
+    Zstream << "<img src=\"" << ui->label_7->getPath() << "\" alt=\"image d'illustration\" width=\"10%\" />";
     Zstream << "<h2>Ville : " << Zcity << "</h2>";
     Zstream << "<h2>Département : " << Zdept << "</h2>";
     Zstream << "<h2>Difficulté : ";
