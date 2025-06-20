@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     /******************************************* INTRO TAB *******************************************/
     introLayout=new QGridLayout();
 
-
+    setWindowIcon(QIcon("../../z.png"));
 
     QLabel *l=new QLabel("Icone (Qui parle ?)");
     QComboBox *cb=new QComboBox();
