@@ -20,12 +20,12 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    std::vector<QComboBox*> vectComboIntro;
-    std::vector<QTextEdit*> vectTextIntro;
-    std::vector<QTextEdit*> vectTextEtapes;
-    std::vector<QComboBox*> vectComboEtapes;
-    QGridLayout* introLayout;
-    QGridLayout* etapesLayout;
+    std::vector<QComboBox *> vectComboIntro;
+    std::vector<QTextEdit *> vectTextIntro;
+    std::vector<QTextEdit *> vectTextEtapes;
+    std::vector<QComboBox *> vectComboEtapes;
+    QGridLayout *introLayout;
+    QGridLayout *etapesLayout;
     QString ZimageToHtml();
 
 private slots:
