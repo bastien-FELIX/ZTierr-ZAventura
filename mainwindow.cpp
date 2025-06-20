@@ -188,8 +188,19 @@ void MainWindow::on_actionExporter_en_html_triggered()
         Zstream << "<p>" + vectTextIntro[i]->toPlainText() + "</p>";
     }
 
-    Zstream << "\n</body> </html>\n\n";
 
+    // about
+
+    Zstream << "<h1>A propos</h1>";
+
+    Zstream << "<h2>Organisation : " + ui->lineEdit_orga->displayText() + "</h2>";
+    Zstream << "<h2>Adresse : " + ui->lineEdit_adresse->displayText() + "</h2>";
+    Zstream << "<h2>Code postal & Ville : " + ui->lineEdit_ville->displayText() + "</h2>";
+    Zstream << "<h2>Num. téléphone : " + ui->lineEdit_tel->displayText() + "</h2>";
+    Zstream << "<h2>Adresse e-mail : " + ui->lineEdit_mail->displayText() + "</h2>";
+    Zstream << "<h2>Site web : <a href=\"" + ui->lineEdit_web->displayText() + "\">" + ui->lineEdit_web->displayText() + "</a> </h2>";
+
+    Zstream << "\n</body> </html>\n\n";
     Zfile.close();
 }
 
