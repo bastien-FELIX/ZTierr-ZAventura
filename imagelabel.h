@@ -17,6 +17,10 @@ public:
     ~imageLabel();
     void open();
 
+    QString getPath() const;
+
+    void setPath(const QString &newPath);
+
 protected:
     void mousePressEvent(QMouseEvent* event);
     QString path;

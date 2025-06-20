@@ -31,6 +31,7 @@ public:
     QJsonObject toJson() const;
     void fromJson(const QJsonObject &json);
     void loadSave();
+    void toHTML();
 
 private slots:
 

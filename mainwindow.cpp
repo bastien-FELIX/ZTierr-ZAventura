@@ -6,6 +6,7 @@
 #include <QSizePolicy>
 #include <QScrollArea>
 #include<QMessageBox>
+#include <QJsonArray>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -132,20 +133,11 @@ void MainWindow::on_btPlusIntro_clicked()
     gl2->addWidget(te, 0,1);
 
     introLayout->addLayout(gl2,line+1,0);
-
-
-
-
-
-
 }
 
 QString MainWindow::ZimageToHtml() {
     return "<img src=\"" + Zimage + "\" width=\"400\" height=\"500\" />";
 }
-
-
-
 
 void MainWindow::on_actionExporter_triggered()
 {
@@ -201,11 +193,62 @@ QJsonObject MainWindow::toJson() const
     json["ztime"] = ui->lineEdit_4->displayText();
     json["zdiff"] = QString::number(ui->spinBox->value());
     json["zleng"] = ui->lineEdit_5->displayText();
+    json["zillu"] = ui->label_7->getPath();
+
+    QJsonArray tmp;
+
+    for (auto elem: vectComboIntro) {
+        tmp.append(elem->currentText());
+    }
+
+    json["zcome"] = tmp;
+
+    tmp = QJsonArray();
+    for (auto elem: vectComboIntro) {
+        tmp.append(elem->currentText());
+    }
+
+    json["zcomi"] = tmp;
+
+    tmp = QJsonArray();
+    for (auto elem: vectTextEtapes) {
+        tmp.append(elem->toPlainText() );
+    }
+
+    json["ztexe"] = tmp;
+
+    tmp = QJsonArray();
+    for (auto elem: vectTextIntro) {
+        tmp.append(elem->toPlainText() );
+    }
+
+    json["ztexi"] = tmp;
+
     return json;
 }
 
 void MainWindow::fromJson(const QJsonObject &json)
 {
+    for (auto elem: vectComboIntro) {
+        delete elem;
+    }
+    vectComboIntro = std::vector<QComboBox*>();
+
+    for (auto elem: vectTextIntro) {
+        delete elem;
+    }
+    vectTextIntro = std::vector<QTextEdit*>();
+
+    for (auto elem: vectTextEtapes) {
+        delete elem;
+    }
+    vectTextEtapes = std::vector<QTextEdit*>();
+
+    for (auto elem: vectComboEtapes) {
+        delete elem;
+    }
+    vectComboEtapes = std::vector<QComboBox*>();
+
     if (const QJsonValue v = json["ztitl"]; v.isString())
         ui->lineEdit->setText(v.toString());
     if (const QJsonValue v = json["zcity"]; v.isString())
@@ -215,9 +258,43 @@ void MainWindow::fromJson(const QJsonObject &json)
     if (const QJsonValue v = json["ztime"]; v.isString())
         ui->lineEdit_4->setText(v.toString());
     if (const QJsonValue v = json["zdiff"]; v.isString())
-        ui->spinBox->setValue(v.toInt());
+        ui->spinBox->setValue(v.toString().toInt());
     if (const QJsonValue v = json["zleng"]; v.isString())
         ui->lineEdit_5->setText(v.toString());
+
+    if (const QJsonValue v = json["zillu"]; v.isString()){
+        ui->label_7->setPath(v.toString());
+        ui->label_7->open();
+    }
+
+    if (const QJsonValue v = json["zcome"]; v.isArray()){
+        //for (auto elem: v.toArray()) {
+        //    on_btPlusIntro_clicked();
+        //}
+    }
+
+    if (const QJsonValue v = json["ztexe"]; v.isArray()){
+        //for (auto elem: v.toArray()) {
+        //    on_btPlusIntro_clicked();
+        //}
+    }
+
+    if (const QJsonValue v = json["zcomi"]; v.isArray()){
+        int i = 0;
+        for (auto elem: v.toArray()) {
+            on_btPlusIntro_clicked();
+            vectComboIntro[i]->addItem(elem.toString());
+            i++;
+        }
+    }
+
+    if (const QJsonValue v = json["ztexi"]; v.isArray()){
+        int i = 0;
+        for (auto elem: v.toArray()) {
+            vectTextIntro[i]->setText(elem.toString());
+            i++;
+        }
+    }
 }
 
 void MainWindow::loadSave()
@@ -239,4 +316,3 @@ void MainWindow::on_actionImporter_triggered()
 {
     loadSave();
 }
-
