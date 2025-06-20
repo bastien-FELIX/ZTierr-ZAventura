@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "etape.h"
 #include <QMainWindow>
 #include <QJsonObject>
 #include <QFileDialog>
@@ -28,19 +29,22 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    std::vector<QComboBox *> vectComboIntro;
-    std::vector<QTextEdit *> vectTextIntro;
+    std::vector<QComboBox*> vectComboIntro;
+    std::vector<QTextEdit*> vectTextIntro;
     std::vector<Etape*> vectEtapes;
-    QGridLayout *introLayout;
-    QGridLayout *etapesLayout;
+    QGridLayout* introLayout;
+    QGridLayout* etapesLayout;
     QString ZimageToHtml();
     QJsonObject toJson() const;
     QMap<QPushButton*, Etape*> mapbt;
+
+
+
+    void buildEtape();
+
     void fromJson(const QJsonObject &json);
     void loadSave();
     void addPerso(QString t);
-
-    void buildEtape();
 
 private slots:
 
@@ -52,9 +56,11 @@ private slots:
 
     void on_actionImporter_triggered();
 
-     void on_pushButtonAddEtape_clicked();
+    void on_pushButtonAddEtape_clicked();
 
     void on_actionPersonnage_triggered();
+
+    void on_pushButton_2_clicked();
 
 public slots:
     void on_push_addDialogEtape();
