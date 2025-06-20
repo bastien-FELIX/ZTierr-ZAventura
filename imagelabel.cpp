@@ -29,7 +29,7 @@ void imageLabel::open()
 
     } else {
         fileName = QFileDialog::getOpenFileName(this,
-                                                        tr("Open File"), QDir::currentPath());
+                                                tr("Open File"), QDir::currentPath());
     }
 
     if (!fileName.isEmpty()) {
@@ -42,7 +42,7 @@ void imageLabel::open()
                     .arg(fileName));
             if (path.length() > 0) {
                 path = QFileDialog::getOpenFileName(this,
-                                                        tr("Open File"), QDir::currentPath());
+                                                    tr("Open File"), QDir::currentPath());
                 open();
             }
             return;
@@ -53,4 +53,3 @@ void imageLabel::open()
         path = fileName;
     }
 }
-
