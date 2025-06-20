@@ -23,6 +23,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Zerra_Zaventura_Zeditor
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        imagelabel.h imagelabel.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Zerra_Zaventura_Zeditor APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -68,3 +69,5 @@ install(TARGETS Zerra_Zaventura_Zeditor
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(Zerra_Zaventura_Zeditor)
 endif()
+
+target_include_directories(Zerra_Zaventura_Zeditor PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
