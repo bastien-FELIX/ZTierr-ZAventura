@@ -122,11 +122,6 @@ void MainWindow::on_btPlusIntro_clicked()
     introLayout->addLayout(gl2, line + 1, 0);
 }
 
-QString MainWindow::ZimageToHtml()
-{
-    return "<img src=\"" + Zimage + "\" width=\"400\" height=\"500\" />";
-}
-
 void MainWindow::on_actionExporter_triggered()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
@@ -162,6 +157,10 @@ void MainWindow::on_actionExporter_en_html_triggered()
     QTextStream Zstream(&Zfile);
 
     Zstream << "<!DOCTYPE html> <html> <head> <title> " + Ztitle + "</title> </head> <body>\n";
+
+    // infos parcours
+    
+    Zstream << "<img href=\"" << ui->label_7->
     Zstream << "<h2>Ville : " << Zcity << "</h2>";
     Zstream << "<h2>Département : " << Zdept << "</h2>";
     Zstream << "<h2>Difficulté : ";
@@ -186,7 +185,7 @@ void MainWindow::on_actionExporter_en_html_triggered()
 
     // about
 
-    Zstream << "<h1>A propos</h1>";
+    Zstream << "<h1>Contact</h1>";
 
     Zstream << "<h2>Organisation : " + ui->lineEdit_orga->displayText() + "</h2>";
     Zstream << "<h2>Adresse : " + ui->lineEdit_adresse->displayText() + "</h2>";
@@ -356,7 +355,12 @@ void MainWindow::on_actionImporter_triggered()
 void MainWindow::on_actionPersonnage_triggered()
 {
     bool ok;
-    QString text = QInputDialog::getText(this, tr("Le Z demande une nouvelle victime"), tr("Entrez zun nom de personnage"), QLineEdit::Normal, "", &ok);
+    QString text = QInputDialog::getText(this,
+                                         tr("Le Z a faim"),
+                                         tr("Entrez zun nom de personnage"),
+                                         QLineEdit::Normal,
+                                         "Le Z demande une nouvelle victime",
+                                         &ok);
     if (ok && !text.isEmpty())
     {
         addPerso(text);
@@ -364,13 +368,13 @@ void MainWindow::on_actionPersonnage_triggered()
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
-    QMessageBox::StandardButton resBtn = QMessageBox::question(
-        this, tr("Le Z te salut"),
-        tr("Le Z te remercie pour tes services"),
-        QMessageBox::Yes | QMessageBox::Yes,
-        QMessageBox::Yes);
+    QMessageBox::StandardButton resBtn = QMessageBox::critical(this,
+                                tr("Le Z te salut"),
+                                tr("Le Z te remercie pour tes services.\nmplc"),
+                                QMessageBox::Ok | QMessageBox::Yes,
+                                QMessageBox::Yes);
 
-    if (resBtn == QMessageBox::Yes) {
+    if (resBtn == QMessageBox::Yes || resBtn == QMessageBox::Ok) {
         event->accept();
     } else {
         event->ignore();
