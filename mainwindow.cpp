@@ -25,11 +25,15 @@ MainWindow::MainWindow(QWidget *parent)
     QSpacerItem *sp = new QSpacerItem(0, 0, QSizePolicy::Expanding);
     QLabel *l2 = new QLabel("Dialogue :");
     QTextEdit *te = new QTextEdit();
+
     te->setMinimumHeight(100);
 
     gl->addWidget(l, 0, 0);
     gl->addWidget(cb, 0, 1);
     gl->addItem(sp, 0, 2);
+    cb->addItem("Le Z");
+    cb->addItem("Zart");
+
 
     vectComboIntro.push_back(cb);
     vectTextIntro.push_back(te);
@@ -104,6 +108,8 @@ void MainWindow::on_btPlusIntro_clicked()
     gl->addWidget(l, 0, 0);
     gl->addWidget(cb, 0, 1);
     gl->addItem(sp, 0, 2);
+    cb->addItem("Le Z");
+    cb->addItem("Zart");
 
     vectComboIntro.push_back(cb);
     vectTextIntro.push_back(te);
@@ -146,7 +152,7 @@ void MainWindow::on_actionExporter_en_html_triggered()
     int Zdifficulty = ui->spinBox->value();
     QString Zlength = ui->lineEdit_5->displayText();
 
-    QFile Zfile(QFileDialog::getOpenFileName(this, "ZOpen Ze Zfile"));
+    QFile Zfile(QFileDialog::getSaveFileName(this, "ZOpen Ze Zfile"));
 
     if (!Zfile.open(QIODevice::WriteOnly | QFile::Text)) {
         QMessageBox::warning(this, "Warning", "Le Z a volé le fichier: " + Zfile.errorString());
@@ -155,7 +161,7 @@ void MainWindow::on_actionExporter_en_html_triggered()
 
     QTextStream Zstream(&Zfile);
 
-    Zstream << "<!DOCTYPE html> <html> <head> <title> " + Ztitle + "</title> </head> <body>" + "\n";
+    Zstream << "<!DOCTYPE html> <html> <head> <title> " + Ztitle + "</title> </head> <body>\n";
 
     // infos parcours
 
