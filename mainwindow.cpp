@@ -1,12 +1,17 @@
-#include "mainwindow.h"
 #include <QFileDialog>
+#include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "QLabel"
+#include "QLayoutItem"
+#include <QSizePolicy>
+#include <QScrollArea>
+#include<QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-
+    /******************************************* INTRO TAB *******************************************/
     introLayout=new QGridLayout();
 
 
@@ -45,8 +50,37 @@ MainWindow::MainWindow(QWidget *parent)
     scrollArea->setWidget(introWidget);
 
 
+    /******************************************* ETAPES TAB *******************************************/
+
+    // QLabel *le=new QLabel("Titre : ");
+    // QTextEdit *t =new QTextEdit();
+    // vectTextEtapes.push_back(t);
+    // QComboBox *comboNS = new QComboBox();
+    // QLineEdit *lncoordNS=new QLineEdit();
+    // QComboBox *comboEO=new QComboBox();
+    // QLineEdit *lncoordEO=new QLineEdit();
+
+    // QGridLayout *titleLayout=new QGridLayout();
+    
+    // titleLayout->addWidget(le,0,0);
+    // titleLayout->addWidget(t,1,0);
+    // titleLayout->addWidget(comboNS,2,0);
+    // titleLayout->addWidget(lncoordNS,3,0);
+    
+
+
+
+
+    // QWidget* etapesWidget = new QWidget();
+    // etapesWidget->setLayout(etapesLayout);
+
+    // QScrollArea *scrollAreaEtapes = new QScrollArea();
+    // scrollAreaEtapes->setWidgetResizable(true);
+    // scrollAreaEtapes->setWidget(etapesWidget);
+
 
     ui->setupUi(this);
+    // ui->gridLayoutEtapes->addWidget(scrollAreaEtapes);
     ui->gridLayoutIntroDialogue->addWidget(scrollArea);
 
 
@@ -56,30 +90,18 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+
 }
 
-void MainWindow::on_pushButton_clicked()
-{
-    QString Zfilename = QFileDialog::getOpenFileName(this, "ZOpen Ze Zfile");
 
-    int l = Zfilename.length();
-    QString ZfileFormat;
 
-    if (l >= 4) {
-        ZfileFormat = QString(Zfilename[l - 4]) + QString(Zfilename[l - 3]) + QString(Zfilename[l - 2]) + QString(Zfilename[l - 1]);
-    } else {
-        ui->Django->setText("Le Z a volé le fichier sélectionné. \n\nMerci de bien sélectionner un fichier.");
-        return;
-    }
 
-    if (ZfileFormat == ".png" || ZfileFormat == ".jpg" || ZfileFormat == "jpeg") {
-        Zimage = Zfilename;
-        ui->Django->setText(ZimageToHtml());
-    } else {
-        ui->Django->setText("Le Z a volé les autres formats de fichiers. \n\nMerci de donner une image sous le bon format");
-    }
-}
-
+// void on_pushbutton_clicked()
+// {
+//     MyCustomFrame *frame = new MyCustomFrame(this);
+//     ui->verticalLayout->addWidget(frame);
+//     // do other init stuff
+// }
 
 void MainWindow::on_btPlusIntro_clicked()
 {
@@ -110,11 +132,20 @@ void MainWindow::on_btPlusIntro_clicked()
     gl2->addWidget(te, 0,1);
 
     introLayout->addLayout(gl2,line+1,0);
+
+
+
+
+
+
 }
 
 QString MainWindow::ZimageToHtml() {
     return "<img src=\"" + Zimage + "\" width=\"400\" height=\"500\" />";
 }
+
+
+
 
 void MainWindow::on_actionExporter_triggered()
 {
@@ -136,52 +167,9 @@ void MainWindow::on_actionExporter_triggered()
 
     Zstream << Ztitle + "\n" + Zcity + "\n" + Zdept + "\n" + Zdifficulty + "\n" + Ztime + "\n" + Zlength + "\n" + Zimage;
 
-    for (int i = 0; i < vectTextIntro.size(); i++) {
-        Zstream << vectComboIntro[i]->currentText() + "\n";
-        Zstream << vectTextIntro[i]->toPlainText() + "\n#";
-    }
-    
     Zfile.close();
 }
 
-
-void MainWindow::on_actionImporter_triggered()
-{
-    QFile Zfile(QFileDialog::getOpenFileName(this, "ZOpen Ze Zfile"));
-
-    if (!Zfile.open(QIODevice::ReadOnly | QFile::Text)) {
-        QMessageBox::warning(this, "Warning", "Le Z a volé le fichier: " + Zfile.errorString());
-        return;
-    }
-
-    QTextStream Zstream(&Zfile);
-    QString line;
-
-
-    for (int i = 0; i < 7; i++) {
-        line = Zstream.readLine();
-
-        switch(i) {
-        case 0:
-            ui->lineEdit->setText(line);
-        case 1:
-            ui->lineEdit_2->setText(line);
-        case 2:
-            ui->lineEdit_3->setText(line);
-        case 3:
-            ui->spinBox->setValue(line.toInt());
-        case 4:
-            ui->lineEdit_4->setText(line);
-        case 5:
-            ui->lineEdit_5->setText(line);
-        case 6:
-            Zimage = line;
-            ui->Django->setText(ZimageToHtml());
-        }
-    }
-
-    Zfile.close();
-}
 
 
 void MainWindow::on_actionExporter_en_html_triggered()
@@ -210,3 +198,4 @@ void MainWindow::on_actionExporter_en_html_triggered()
 
     Zfile.close();
 }
+
