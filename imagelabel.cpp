@@ -35,7 +35,7 @@ void imageLabel::open()
     if (!fileName.isEmpty()) {
         QImage image(fileName);
         if (image.isNull()) {
-            QMessageBox::information(
+            QMessageBox::critical(
                 this,
                 tr("Sacré Z"),
                 tr("Le Z a volé ce format de fichier. Merci d'entrer un fichier au format valide.")
