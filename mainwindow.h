@@ -6,6 +6,7 @@
 #include <qgridlayout.h>
 #include <qtextedit.h>
 #include <vector>
+#include <QJsonObject>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -27,6 +28,9 @@ public:
     QGridLayout* introLayout;
     QGridLayout* etapesLayout;
     QString ZimageToHtml();
+    QJsonObject toJson() const;
+    void fromJson(const QJsonObject &json);
+    void loadSave();
 
 private slots:
 
@@ -35,6 +39,8 @@ private slots:
     void on_actionExporter_triggered();
 
     void on_actionExporter_en_html_triggered();
+
+    void on_actionImporter_triggered();
 
 private:
     Ui::MainWindow *ui;
