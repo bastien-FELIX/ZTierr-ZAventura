@@ -142,10 +142,10 @@ void MainWindow::on_actionExporter_en_html_triggered()
     QString Zcity = ui->lineEdit_2->displayText();
     QString Zdept = ui->lineEdit_3->displayText();
     QString Ztime = ui->lineEdit_4->displayText();
-    QString Zdifficulty = QString::number(ui->spinBox->value());
+    int Zdifficulty = ui->spinBox->value();
     QString Zlength = ui->lineEdit_5->displayText();
 
-    QFile Zfile(QFileDialog::getOpenFileName(this, "ZOpen Ze Zfile"));
+    QFile Zfile(QFileDialog::getSaveFileName(this, "ZOpen Ze Zfile"));
 
     if (!Zfile.open(QIODevice::WriteOnly | QFile::Text)) {
         QMessageBox::warning(this, "Warning", "Le Z a volé le fichier: " + Zfile.errorString());
@@ -154,13 +154,46 @@ void MainWindow::on_actionExporter_en_html_triggered()
 
     QTextStream Zstream(&Zfile);
 
-    Zstream << "<!DOCTYPE html> <html> <head> <title> " + Ztitle + "</title> </head> <body>" + "\n";
+    Zstream << "<!DOCTYPE html> <html> <head> <title> " + Ztitle + "</title> </head> <body>\n";
 
-    Zstream << Ztitle + " " + Zcity + "\n" + Zdept + "\n" + Zdifficulty + "\n" + Ztime + "\n"
-                   + Zlength + "\n" + ZimageToHtml();
+    // infos parcours
 
-    Zstream << "\n</body> </html>";
+    Zstream << "<h2>Ville : " << Zcity << "</h2>";
+    Zstream << "<h2>Département : " << Zdept << "</h2>";
+    Zstream << "<h2>Difficulté : ";
 
+    for (int i = 0; i < Zdifficulty; i++) {
+        Zstream << "*";
+    }
+
+    Zstream << "</h2>";
+
+    Zstream << "<h2>Durée : " << Ztime<< "h</h2>";
+    Zstream << "<h2>Longueur : " << Zlength << "km</h2>";
+
+
+    Zstream << "<h1> Intro </h1>";
+
+    // intro
+
+    for (int i = 0; i < vectTextIntro.size(); i++) {
+        Zstream << "<h2>" + vectComboIntro[i]->currentText() + "</h2>";
+        Zstream << "<p>" + vectTextIntro[i]->toPlainText() + "</p>";
+    }
+
+
+    // about
+
+    Zstream << "<h1>A propos</h1>";
+
+    Zstream << "<h2>Organisation : " + ui->lineEdit_orga->displayText() + "</h2>";
+    Zstream << "<h2>Adresse : " + ui->lineEdit_adresse->displayText() + "</h2>";
+    Zstream << "<h2>Code postal & Ville : " + ui->lineEdit_ville->displayText() + "</h2>";
+    Zstream << "<h2>Num. téléphone : " + ui->lineEdit_tel->displayText() + "</h2>";
+    Zstream << "<h2>Adresse e-mail : " + ui->lineEdit_mail->displayText() + "</h2>";
+    Zstream << "<h2>Site web : <a href=\"" + ui->lineEdit_web->displayText() + "\">" + ui->lineEdit_web->displayText() + "</a> </h2>";
+
+    Zstream << "\n</body> </html>\n\n";
     Zfile.close();
 }
 
