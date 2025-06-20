@@ -18,7 +18,11 @@ void imageLabel::open()
         path = fileName;
         QImage image(fileName);
         if (image.isNull()) {
-            QMessageBox::information(this, tr("Image Viewer"), tr("Le Z a volé ce format de fichier. Merci d'entrer un fichier au format valide.").arg(fileName));
+            QMessageBox::information(
+                this,
+                tr("Sacré Z"),
+                tr("Le Z a volé ce format de fichier. Merci d'entrer un fichier au format valide.")
+                    .arg(fileName));
             return;
         }
         QPixmap tmp = QPixmap::fromImage(image);
