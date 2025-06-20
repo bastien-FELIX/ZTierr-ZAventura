@@ -1,20 +1,19 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "etape.h"
-#include <QMainWindow>
-#include <QJsonObject>
+#include <QCloseEvent>
 #include <QFileDialog>
+#include <QInputDialog>
+#include <QJsonObject>
+#include <QMainWindow>
 #include <QMessageBox>
 #include <QScrollArea>
 #include <QSizePolicy>
-#include <QInputDialog>
-#include <QCloseEvent>
+#include "etape.h"
 #include <qcombobox.h>
 #include <qgridlayout.h>
 #include <qtextedit.h>
 #include <vector>
-#include <QJsonObject>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -29,16 +28,14 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    std::vector<QComboBox*> vectComboIntro;
-    std::vector<QTextEdit*> vectTextIntro;
-    std::vector<Etape*> vectEtapes;
-    QGridLayout* introLayout;
-    QGridLayout* etapesLayout;
+    std::vector<QComboBox *> vectComboIntro;
+    std::vector<QTextEdit *> vectTextIntro;
+    std::vector<Etape *> vectEtapes;
+    QGridLayout *introLayout;
+    QGridLayout *etapesLayout;
     QString ZimageToHtml();
     QJsonObject toJson() const;
-    QMap<QPushButton*, Etape*> mapbt;
-
-
+    QMap<QPushButton *, Etape *> mapbt;
 
     void buildEtape();
 

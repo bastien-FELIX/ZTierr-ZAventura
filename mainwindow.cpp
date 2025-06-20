@@ -1,90 +1,76 @@
-#include <QFileDialog>
 #include "mainwindow.h"
+#include <QFileDialog>
+#include <QJsonArray>
+#include <QMessageBox>
+#include <QScrollArea>
+#include <QSizePolicy>
 #include "./ui_mainwindow.h"
 #include "QLabel"
 #include "QLayoutItem"
-#include <QSizePolicy>
-#include <QScrollArea>
-#include<QMessageBox>
-#include <QJsonArray>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     /******************************************* INTRO TAB *******************************************/
-    introLayout=new QGridLayout();
+    introLayout = new QGridLayout();
 
     setWindowIcon(QIcon("../../z.png"));
 
-    QLabel *l=new QLabel("Icone (Qui parle ?)");
-    QComboBox *cb=new QComboBox();
+    QLabel *l = new QLabel("Icone (Qui parle ?)");
+    QComboBox *cb = new QComboBox();
 
-    QGridLayout *gl =new QGridLayout();
-    QGridLayout *gl2 =new QGridLayout();
+    QGridLayout *gl = new QGridLayout();
+    QGridLayout *gl2 = new QGridLayout();
 
-    QSpacerItem *sp=new QSpacerItem(0,0, QSizePolicy::Expanding);
-    QLabel *l2=new QLabel("Dialogue :");
-    QTextEdit* te=new QTextEdit();
+    QSpacerItem *sp = new QSpacerItem(0, 0, QSizePolicy::Expanding);
+    QLabel *l2 = new QLabel("Dialogue :");
+    QTextEdit *te = new QTextEdit();
     te->setMinimumHeight(100);
 
-
-    gl->addWidget(l,0,0);
-    gl->addWidget(cb,0,1);
-    gl->addItem(sp,0,2);
+    gl->addWidget(l, 0, 0);
+    gl->addWidget(cb, 0, 1);
+    gl->addItem(sp, 0, 2);
 
     vectComboIntro.push_back(cb);
     vectTextIntro.push_back(te);
 
-
-
-    introLayout->addLayout(gl,0,0);
+    introLayout->addLayout(gl, 0, 0);
     gl2->addWidget(l2, 0, 0);
-    gl2->addWidget(te, 0,1);
+    gl2->addWidget(te, 0, 1);
 
-    introLayout->addLayout(gl2,1,0);
+    introLayout->addLayout(gl2, 1, 0);
 
-    QWidget* introWidget = new QWidget();
+    QWidget *introWidget = new QWidget();
     introWidget->setLayout(introLayout);
 
     QScrollArea *scrollArea = new QScrollArea();
     scrollArea->setWidgetResizable(true);
     scrollArea->setWidget(introWidget);
 
-
     /******************************************* ETAPES TAB *******************************************/
-    etapesLayout=new QGridLayout();
+    etapesLayout = new QGridLayout();
 
-    QWidget* etapesWidget = new QWidget();
+    QWidget *etapesWidget = new QWidget();
     etapesWidget->setLayout(etapesLayout);
 
     QScrollArea *scrollAreaEtapes = new QScrollArea();
     scrollAreaEtapes->setWidgetResizable(true);
     scrollAreaEtapes->setWidget(etapesWidget);
 
-
     ui->setupUi(this);
     ui->gridLayoutEtapes->addWidget(scrollAreaEtapes);
     ui->gridLayoutIntroDialogue->addWidget(scrollArea);
-
-
-
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 
-    for(Etape* e : vectEtapes){
+    for (Etape *e : vectEtapes) {
         delete e;
     }
-
 }
-
-
-
-
-
 
 void MainWindow::on_btPlusIntro_clicked()
 {
@@ -121,15 +107,9 @@ void MainWindow::on_btPlusIntro_clicked()
     introLayout->addLayout(gl2, line + 1, 0);
 }
 
-
-
-
-
-
 void MainWindow::on_actionExporter_triggered()
 {
-    QString fileName = QFileDialog::getSaveFileName(this,
-                                                    tr("Open File"), QDir::currentPath());
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Open File"), QDir::currentPath());
     if (!fileName.isEmpty()) {
         QFile saveFile(fileName);
 
@@ -141,7 +121,6 @@ void MainWindow::on_actionExporter_triggered()
         saveFile.write(QJsonDocument(json).toJson());
     }
 }
-
 
 void MainWindow::on_actionExporter_en_html_triggered()
 {
@@ -165,7 +144,8 @@ void MainWindow::on_actionExporter_en_html_triggered()
 
     // infos parcours
 
-    Zstream << "<img src=\"" << ui->label_7->getPath() << "\" alt=\"image d'illustration\" width=\"10%\" />";
+    Zstream << "<img src=\"" << ui->label_7->getPath()
+            << "\" alt=\"image d'illustration\" width=\"10%\" />";
     Zstream << "<h2>Ville : " << Zcity << "</h2>";
     Zstream << "<h2>Département : " << Zdept << "</h2>";
     Zstream << "<h2>Difficulté : ";
@@ -204,8 +184,8 @@ void MainWindow::on_actionExporter_en_html_triggered()
     Zfile.close();
 }
 
-
-void MainWindow::addPerso(QString t) {
+void MainWindow::addPerso(QString t)
+{
     for (auto elem : vectComboIntro) {
         bool in = false;
         for (int i = 0; i < elem->count(); i++) {
@@ -217,6 +197,21 @@ void MainWindow::addPerso(QString t) {
             elem->addItem(t);
         }
     }
+    /********************* TO ADD ITEMSTO THE QCOMBOBOX OF DIALOGS IN ETAPES, NEED DEBUG *********************/
+    // for (Etape* etape : vectEtapes){
+    //     for(QGridLayout* g: etape->vectgrid){
+    //         QComboBox* elem= static_cast<QComboBox*> (static_cast<QGridLayout*>( g->itemAt(0))->itemAt(1));
+    //         bool in = false;
+    //         for (int i = 0; i < elem->count(); i++) {
+    //             if (elem->itemText(i) == t) {
+    //                 in = true;
+    //             }
+    //         }
+    //         if (!in) {
+    //             elem->addItem(t);
+    //         }
+    //     }
+    // }
 }
 
 QJsonObject MainWindow::toJson() const
@@ -232,16 +227,15 @@ QJsonObject MainWindow::toJson() const
 
     QJsonArray tmp;
 
-    for (auto elem: vectComboIntro) {
+    for (auto elem : vectComboIntro) {
         tmp.append(elem->currentText());
     }
 
     json["zcomi"] = tmp;
 
-
     tmp = QJsonArray();
-    for (auto elem: vectTextIntro) {
-        tmp.append(elem->toPlainText() );
+    for (auto elem : vectTextIntro) {
+        tmp.append(elem->toPlainText());
     }
 
     json["ztexi"] = tmp;
@@ -249,24 +243,21 @@ QJsonObject MainWindow::toJson() const
     return json;
 }
 
-
 void MainWindow::fromJson(const QJsonObject &json)
 {
-    for (auto elem: introLayout->children()) {
+    for (auto elem : introLayout->children()) {
         delete elem;
     }
 
-    for (auto elem: vectComboIntro) {
+    for (auto elem : vectComboIntro) {
         delete elem;
     }
-    vectComboIntro = std::vector<QComboBox*>();
+    vectComboIntro = std::vector<QComboBox *>();
 
-    for (auto elem: vectTextIntro) {
+    for (auto elem : vectTextIntro) {
         delete elem;
     }
-    vectTextIntro = std::vector<QTextEdit*>();
-
-
+    vectTextIntro = std::vector<QTextEdit *>();
 
     if (const QJsonValue v = json["ztitl"]; v.isString())
         ui->lineEdit->setText(v.toString());
@@ -281,18 +272,14 @@ void MainWindow::fromJson(const QJsonObject &json)
     if (const QJsonValue v = json["zleng"]; v.isString())
         ui->lineEdit_5->setText(v.toString());
 
-    if (const QJsonValue v = json["zillu"]; v.isString()){
+    if (const QJsonValue v = json["zillu"]; v.isString()) {
         ui->label_7->setPath(v.toString());
         ui->label_7->open();
     }
 
-
-
-
-
-    if (const QJsonValue v = json["zcomi"]; v.isArray()){
+    if (const QJsonValue v = json["zcomi"]; v.isArray()) {
         int i = 0;
-        for (auto elem: v.toArray()) {
+        for (auto elem : v.toArray()) {
             on_btPlusIntro_clicked();
             addPerso(elem.toString());
             vectComboIntro[i]->setCurrentText(elem.toString());
@@ -300,22 +287,18 @@ void MainWindow::fromJson(const QJsonObject &json)
         }
     }
 
-    if (const QJsonValue v = json["ztexi"]; v.isArray()){
+    if (const QJsonValue v = json["ztexi"]; v.isArray()) {
         int i = 0;
-        for (auto elem: v.toArray()) {
+        for (auto elem : v.toArray()) {
             vectTextIntro[i]->setText(elem.toString());
             i++;
         }
     }
-
 }
-
-
 
 void MainWindow::loadSave()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,
-                                                    tr("Open File"), QDir::currentPath());
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::currentPath());
     if (!fileName.isEmpty()) {
         QFile loadFile(fileName);
         if (!loadFile.open(QIODevice::ReadOnly)) {
@@ -326,7 +309,6 @@ void MainWindow::loadSave()
         fromJson(loadDoc.object());
     }
 }
-
 
 void MainWindow::on_actionImporter_triggered()
 {
@@ -342,18 +324,19 @@ void MainWindow::on_actionPersonnage_triggered()
                                          QLineEdit::Normal,
                                          "Le Z demande une nouvelle victime",
                                          &ok);
-    if (ok && !text.isEmpty())
-    {
+    if (ok && !text.isEmpty()) {
         addPerso(text);
     }
 }
 
-void MainWindow::closeEvent(QCloseEvent *event) {
-    QMessageBox::StandardButton resBtn = QMessageBox::critical(this,
-                                                               tr("Le Z te salut"),
-                                                               tr("Le Z te remercie pour tes services.\nmplc"),
-                                                               QMessageBox::Ok | QMessageBox::Yes,
-                                                               QMessageBox::Yes);
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    QMessageBox::StandardButton resBtn
+        = QMessageBox::critical(this,
+                                tr("Le Z te salut"),
+                                tr("Le Z te remercie pour tes services.\nmplc"),
+                                QMessageBox::Ok | QMessageBox::Yes,
+                                QMessageBox::Yes);
 
     if (resBtn == QMessageBox::Yes || resBtn == QMessageBox::Ok) {
         event->accept();
@@ -362,132 +345,96 @@ void MainWindow::closeEvent(QCloseEvent *event) {
     }
 }
 
-
-
-
 void MainWindow::on_push_addDialogEtape()
 {
+    QObject *src = sender();
+    QPushButton *s = static_cast<QPushButton *>(src);
+    Etape *etape = mapbt[s];
 
+    etape->addDialog();
+    etape->build();
 
-    QObject* src=sender();
-    QPushButton* s=static_cast<QPushButton*>(src);
-    Etape* etape=mapbt[s];
+    vectEtapes.push_back(etape);
 
-        etape->addDialog();
-        etape->build();
-
-        vectEtapes.push_back(etape);
-
-        buildEtape();
-
+    buildEtape();
 }
-
 
 void MainWindow::on_pushButtonAddEtape_clicked()
 {
-
     QPushButton *bt = new QPushButton("Ajouter dialogue");
 
-    Etape *e=new Etape(bt);
+    Etape *e = new Etape(bt);
 
-    mapbt.insert(bt,e);
+    mapbt.insert(bt, e);
     connect(bt, &QPushButton::clicked, this, &MainWindow::on_push_addDialogEtape);
 
     vectEtapes.push_back(e);
 
-
-
     buildEtape();
 
-
-
-
-
-
-
-
-
-
     /****************** OLD VERSION, ARCHIVE (DONT WORK & UNREADABLE) ******************/
-   //  int blockCount = etapesLayout->rowCount() / 5;
-   //  int baseRow = blockCount * 5;
+    //  int blockCount = etapesLayout->rowCount() / 5;
+    //  int baseRow = blockCount * 5;
 
+    //  QLabel *le = new QLabel("Titre : ");
+    //  QLineEdit *t = new QLineEdit();
+    //  QGridLayout *titleLayout = new QGridLayout();
+    //  titleLayout->addWidget(le, 0, 0);
+    //  titleLayout->addWidget(t, 0, 1);
 
-   //  QLabel *le = new QLabel("Titre : ");
-   //  QLineEdit *t = new QLineEdit();
-   //  QGridLayout *titleLayout = new QGridLayout();
-   //  titleLayout->addWidget(le, 0, 0);
-   //  titleLayout->addWidget(t, 0, 1);
+    //  QComboBox *comboNS = new QComboBox();
+    //  QLineEdit *lncoordNS = new QLineEdit();
+    //  QComboBox *comboEO = new QComboBox();
+    //  QLineEdit *lncoordEO = new QLineEdit();
+    //  QGridLayout *coordLayout = new QGridLayout();
+    //  coordLayout->addWidget(comboNS, 0, 0);
+    //  coordLayout->addWidget(lncoordNS, 0, 1);
+    //  coordLayout->addWidget(comboEO, 0, 2);
+    //  coordLayout->addWidget(lncoordEO, 0, 3);
 
+    //  QLabel *letapedial = new QLabel("Icone (Qui parle ?)");
+    //  QComboBox *cbetapedial = new QComboBox();
+    //  QSpacerItem *spetapedial = new QSpacerItem(0, 0, QSizePolicy::Expanding);
+    //  QGridLayout *gletapedial = new QGridLayout();
+    //  gletapedial->addWidget(letapedial, 0, 0);
+    //  gletapedial->addWidget(cbetapedial, 0, 1);
+    //  gletapedial->addItem(spetapedial, 0, 2);
 
-   //  QComboBox *comboNS = new QComboBox();
-   //  QLineEdit *lncoordNS = new QLineEdit();
-   //  QComboBox *comboEO = new QComboBox();
-   //  QLineEdit *lncoordEO = new QLineEdit();
-   //  QGridLayout *coordLayout = new QGridLayout();
-   //  coordLayout->addWidget(comboNS, 0, 0);
-   //  coordLayout->addWidget(lncoordNS, 0, 1);
-   //  coordLayout->addWidget(comboEO, 0, 2);
-   //  coordLayout->addWidget(lncoordEO, 0, 3);
+    //  QLabel *letapedial2 = new QLabel("Dialogue :");
+    //  QTextEdit* teetapedial = new QTextEdit();
+    //  teetapedial->setMinimumHeight(100);
+    //  QGridLayout *gletapedial2 = new QGridLayout();
+    //  gletapedial2->addWidget(letapedial2, 0, 0);
+    //  gletapedial2->addWidget(teetapedial, 0, 1);
 
+    //  QPushButton *btAddDialog = new QPushButton("Ajouter un dialogue");
+    //  QPushButton *btAddQuestion = new QPushButton("Ajouter une question");
+    //  QHBoxLayout *btLayout = new QHBoxLayout();
+    //  btLayout->addWidget(btAddDialog);
+    //  btLayout->addWidget(btAddQuestion);
+    //  connect(btAddDialog, &QPushButton::clicked, this, &MainWindow::on_push_addDialogEtape);
 
-   //  QLabel *letapedial = new QLabel("Icone (Qui parle ?)");
-   //  QComboBox *cbetapedial = new QComboBox();
-   //  QSpacerItem *spetapedial = new QSpacerItem(0, 0, QSizePolicy::Expanding);
-   //  QGridLayout *gletapedial = new QGridLayout();
-   //  gletapedial->addWidget(letapedial, 0, 0);
-   //  gletapedial->addWidget(cbetapedial, 0, 1);
-   //  gletapedial->addItem(spetapedial, 0, 2);
+    //  etapesLayout->addLayout(titleLayout,    baseRow + 0, 0);
+    //  etapesLayout->addLayout(coordLayout,    baseRow + 1, 0);
+    //  etapesLayout->addLayout(gletapedial,    baseRow + 2, 0);
+    //  etapesLayout->addLayout(gletapedial2,   baseRow + 3, 0);
+    //  etapesLayout->addLayout(btLayout,       baseRow + 4, 0);
 
-
-   //  QLabel *letapedial2 = new QLabel("Dialogue :");
-   //  QTextEdit* teetapedial = new QTextEdit();
-   //  teetapedial->setMinimumHeight(100);
-   //  QGridLayout *gletapedial2 = new QGridLayout();
-   //  gletapedial2->addWidget(letapedial2, 0, 0);
-   //  gletapedial2->addWidget(teetapedial, 0, 1);
-
-
-   //  QPushButton *btAddDialog = new QPushButton("Ajouter un dialogue");
-   //  QPushButton *btAddQuestion = new QPushButton("Ajouter une question");
-   //  QHBoxLayout *btLayout = new QHBoxLayout();
-   //  btLayout->addWidget(btAddDialog);
-   //  btLayout->addWidget(btAddQuestion);
-   //  connect(btAddDialog, &QPushButton::clicked, this, &MainWindow::on_push_addDialogEtape);
-
-
-   //  etapesLayout->addLayout(titleLayout,    baseRow + 0, 0);
-   //  etapesLayout->addLayout(coordLayout,    baseRow + 1, 0);
-   //  etapesLayout->addLayout(gletapedial,    baseRow + 2, 0);
-   //  etapesLayout->addLayout(gletapedial2,   baseRow + 3, 0);
-   //  etapesLayout->addLayout(btLayout,       baseRow + 4, 0);
-
-
-   //  if (etapesLayout->parentWidget()) {
-   //      etapesLayout->parentWidget()->update();
-   //      etapesLayout->parentWidget()->adjustSize();
-   //  }
+    //  if (etapesLayout->parentWidget()) {
+    //      etapesLayout->parentWidget()->update();
+    //      etapesLayout->parentWidget()->adjustSize();
+    //  }
 }
 
-
-void MainWindow::buildEtape(){
-
-
-    for (int i=0;i<etapesLayout->count();i++){
+void MainWindow::buildEtape()
+{
+    for (int i = 0; i < etapesLayout->count(); i++) {
         etapesLayout->removeItem(etapesLayout->itemAt(i));
     }
 
-
-
-    int i=0;
-    for(Etape* etape : vectEtapes){
-        etapesLayout->addLayout(etape->layout,i,0);
+    int i = 0;
+    for (Etape *etape : vectEtapes) {
+        etapesLayout->addLayout(etape->layout, i, 0);
         i++;
     }
-
 }
-
-
-
-
-
