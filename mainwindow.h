@@ -38,6 +38,7 @@ public:
     QJsonObject toJson() const;
     void fromJson(const QJsonObject &json);
     void loadSave();
+    void addPerso(QString t);
 
 private slots:
 

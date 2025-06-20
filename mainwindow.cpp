@@ -104,8 +104,10 @@ void MainWindow::on_btPlusIntro_clicked()
     gl->addWidget(cb, 0, 1);
     gl->addItem(sp, 0, 2);
 
-    for (int i = 0; i < vectComboIntro[0]->count(); i++) {
-        cb->addItem(vectComboIntro[0]->itemText(i));
+    if (vectComboIntro.size() > 0) {
+        for (int i = 0; i < vectComboIntro[0]->count(); i++) {
+            cb->addItem(vectComboIntro[0]->itemText(i));
+        }
     }
 
     vectComboIntro.push_back(cb);
@@ -198,7 +200,19 @@ void MainWindow::on_actionExporter_en_html_triggered()
     Zfile.close();
 }
 
-    // infos parcours
+void MainWindow::addPerso(QString t) {
+    for (auto elem : vectComboIntro) {
+        bool in = false;
+        for (int i = 0; i < elem->count(); i++) {
+            if (elem->itemText(i) == t) {
+                in = true;
+            }
+        }
+        if (!in) {
+            elem->addItem(t);
+        }
+    }
+}
 
 QJsonObject MainWindow::toJson() const
 {
@@ -303,7 +317,8 @@ void MainWindow::fromJson(const QJsonObject &json)
         int i = 0;
         for (auto elem: v.toArray()) {
             on_btPlusIntro_clicked();
-            vectComboIntro[i]->addItem(elem.toString());
+            addPerso(elem.toString());
+            vectComboIntro[i]->setCurrentText(elem.toString());
             i++;
         }
     }
@@ -315,6 +330,7 @@ void MainWindow::fromJson(const QJsonObject &json)
             i++;
         }
     }
+
 }
 
 void MainWindow::loadSave()
@@ -343,9 +359,7 @@ void MainWindow::on_actionPersonnage_triggered()
     QString text = QInputDialog::getText(this, tr("Le Z demande une nouvelle victime"), tr("Entrez zun nom de personnage"), QLineEdit::Normal, "", &ok);
     if (ok && !text.isEmpty())
     {
-        for (auto elem : vectComboIntro) {
-            elem->addItem(text);
-        }
+        addPerso(text);
     }
 }
 
