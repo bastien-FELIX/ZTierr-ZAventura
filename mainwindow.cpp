@@ -1,3 +1,4 @@
+#include <QFileDialog>
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "QLabel"
@@ -5,7 +6,7 @@
 #include <QSizePolicy>
 #include <QScrollArea>
 #include<QMessageBox>
-#include <QJsonArray>
+    #include <QJsonArray>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -14,34 +15,38 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowIcon(QIcon("../../z.png"));
 
     /******************************************* INTRO TAB *******************************************/
-    introLayout = new QGridLayout();
+    introLayout=new QGridLayout();
 
-    QLabel *l = new QLabel("Icone (Qui parle ?)");
-    QComboBox *cb = new QComboBox();
 
-    QGridLayout *gl = new QGridLayout();
-    QGridLayout *gl2 = new QGridLayout();
 
-    QSpacerItem *sp = new QSpacerItem(0, 0, QSizePolicy::Expanding);
-    QLabel *l2 = new QLabel("Dialogue :");
-    QTextEdit *te = new QTextEdit();
+    QLabel *l=new QLabel("Icone (Qui parle ?)");
+    QComboBox *cb=new QComboBox();
+
+    QGridLayout *gl =new QGridLayout();
+    QGridLayout *gl2 =new QGridLayout();
+
+    QSpacerItem *sp=new QSpacerItem(0,0, QSizePolicy::Expanding);
+    QLabel *l2=new QLabel("Dialogue :");
+    QTextEdit* te=new QTextEdit();
     te->setMinimumHeight(100);
 
-    gl->addWidget(l, 0, 0);
-    gl->addWidget(cb, 0, 1);
-    gl->addItem(sp, 0, 2);
-    cb->addItem("Le Z");
+
+    gl->addWidget(l,0,0);
+    gl->addWidget(cb,0,1);
+    gl->addItem(sp,0,2);
 
     vectComboIntro.push_back(cb);
     vectTextIntro.push_back(te);
 
-    introLayout->addLayout(gl, 0, 0);
+
+
+    introLayout->addLayout(gl,0,0);
     gl2->addWidget(l2, 0, 0);
-    gl2->addWidget(te, 0, 1);
+    gl2->addWidget(te, 0,1);
 
-    introLayout->addLayout(gl2, 1, 0);
+    introLayout->addLayout(gl2,1,0);
 
-    QWidget *introWidget = new QWidget();
+    QWidget* introWidget = new QWidget();
     introWidget->setLayout(introLayout);
 
     QScrollArea *scrollArea = new QScrollArea();
@@ -49,45 +54,30 @@ MainWindow::MainWindow(QWidget *parent)
     scrollArea->setWidget(introWidget);
 
     /******************************************* ETAPES TAB *******************************************/
+    etapesLayout=new QGridLayout();
 
-    // QLabel *le=new QLabel("Titre : ");
-    // QTextEdit *t =new QTextEdit();
-    // vectTextEtapes.push_back(t);
-    // QComboBox *comboNS = new QComboBox();
-    // QLineEdit *lncoordNS=new QLineEdit();
-    // QComboBox *comboEO=new QComboBox();
-    // QLineEdit *lncoordEO=new QLineEdit();
+    QWidget* etapesWidget = new QWidget();
+    etapesWidget->setLayout(etapesLayout);
 
-    // QGridLayout *titleLayout=new QGridLayout();
+    QScrollArea *scrollAreaEtapes = new QScrollArea();
+    scrollAreaEtapes->setWidgetResizable(true);
+    scrollAreaEtapes->setWidget(etapesWidget);
 
-    // titleLayout->addWidget(le,0,0);
-    // titleLayout->addWidget(t,1,0);
-    // titleLayout->addWidget(comboNS,2,0);
-    // titleLayout->addWidget(lncoordNS,3,0);
-
-    // QWidget* etapesWidget = new QWidget();
-    // etapesWidget->setLayout(etapesLayout);
-
-    // QScrollArea *scrollAreaEtapes = new QScrollArea();
-    // scrollAreaEtapes->setWidgetResizable(true);
-    // scrollAreaEtapes->setWidget(etapesWidget);
 
     ui->setupUi(this);
-    // ui->gridLayoutEtapes->addWidget(scrollAreaEtapes);
+    ui->gridLayoutEtapes->addWidget(scrollAreaEtapes);
     ui->gridLayoutIntroDialogue->addWidget(scrollArea);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    for(Etape* e : vectEtapes){
+        delete e;
+    }
 }
 
-// void on_pushbutton_clicked()
-// {
-//     MyCustomFrame *frame = new MyCustomFrame(this);
-//     ui->verticalLayout->addWidget(frame);
-//     // do other init stuff
-// }
+
 
 void MainWindow::on_btPlusIntro_clicked()
 {
