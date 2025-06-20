@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QJsonObject>
 #include <qcombobox.h>
 #include <qgridlayout.h>
 #include <qtextedit.h>
