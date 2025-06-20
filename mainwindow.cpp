@@ -3,6 +3,8 @@
 #include <QMessageBox>
 #include <QScrollArea>
 #include <QSizePolicy>
+#include <QJsonObject>
+#include <string>
 #include "./ui_mainwindow.h"
 #include "QLabel"
 #include "QLayoutItem"
@@ -122,8 +124,7 @@ QString MainWindow::ZimageToHtml()
 
 void MainWindow::on_actionExporter_triggered()
 {
-    QString fileName = QFileDialog::getSaveFileName(this,
-                                                    tr("Open File"), QDir::currentPath());
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Open File"), QDir::currentPath());
     if (!fileName.isEmpty()) {
         QFile saveFile(fileName);
 
@@ -156,8 +157,13 @@ void MainWindow::on_actionExporter_en_html_triggered()
 
     Zstream << "<!DOCTYPE html> <html> <head> <title> " + Ztitle + "</title> </head> <body>" + "\n";
 
-    Zstream << Ztitle + " " + Zcity + "\n" + Zdept + "\n" + Zdifficulty + "\n" + Ztime + "\n"
-                   + Zlength + "\n" + ZimageToHtml();
+    // intro
+
+    Zstream << "<h2>Ville : " << Zcity << "</h2>";
+    Zstream << "<h2>Département : " << Zdept << "</h2>";
+    Zstream << "<h2>Difficulté : " << Zdifficulty << "/5</h2>";
+    Zstream << "<h2>Durée : " << Ztime<< "h</h2>";
+    Zstream << "<h2>Longueur : " << Zlength << "km</h2>";
 
     Zstream << "\n</body> </html>";
 
@@ -187,15 +193,14 @@ void MainWindow::fromJson(const QJsonObject &json)
     if (const QJsonValue v = json["ztime"]; v.isString())
         ui->lineEdit_4->setText(v.toString());
     if (const QJsonValue v = json["zdiff"]; v.isString())
-        ui->spinBox->setValue(v.toInt());
+        ui->spinBox->setValue((v.toString()).toInt());
     if (const QJsonValue v = json["zleng"]; v.isString())
         ui->lineEdit_5->setText(v.toString());
 }
 
 void MainWindow::loadSave()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,
-                                                    tr("Open File"), QDir::currentPath());
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::currentPath());
     if (!fileName.isEmpty()) {
         QFile loadFile(fileName);
         if (!loadFile.open(QIODevice::ReadOnly)) {
