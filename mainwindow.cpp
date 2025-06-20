@@ -67,19 +67,17 @@ void MainWindow::on_pushButton_clicked()
 
     if (l >= 4) {
         ZfileFormat = QString(Zfilename[l - 4]) + QString(Zfilename[l - 3]) + QString(Zfilename[l - 2]) + QString(Zfilename[l - 1]);
-
-        if (ZfileFormat == ".png" || ZfileFormat == ".jpg" || ZfileFormat == "jpeg") {
-            QString Ztext = "<img src=\"" + Zfilename + "\" width=\"400\" height=\"500\" />";
-            ui->Django->setText(Ztext);
-        } else {
-            ui->Django->setText("Le Z a volé les autres formats de fichiers. \n\nMerci de donner une image sous le bon format");
-        }
     } else {
         ui->Django->setText("Le Z a volé le fichier sélectionné. \n\nMerci de bien sélectionner un fichier.");
+        return;
     }
 
-
-
+    if (ZfileFormat == ".png" || ZfileFormat == ".jpg" || ZfileFormat == "jpeg") {
+        Zimage = Zfilename;
+        ui->Django->setText(ZimageToHtml());
+    } else {
+        ui->Django->setText("Le Z a volé les autres formats de fichiers. \n\nMerci de donner une image sous le bon format");
+    }
 }
 
 
@@ -138,6 +136,11 @@ void MainWindow::on_actionExporter_triggered()
 
     Zstream << Ztitle + "\n" + Zcity + "\n" + Zdept + "\n" + Zdifficulty + "\n" + Ztime + "\n" + Zlength + "\n" + Zimage;
 
+    for (int i = 0; i < vectTextIntro.size(); i++) {
+        Zstream << vectComboIntro[i]->currentText() + "\n";
+        Zstream << vectTextIntro[i]->toPlainText() + "\n#";
+    }
+    
     Zfile.close();
 }
 
