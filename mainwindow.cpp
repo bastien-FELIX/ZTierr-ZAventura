@@ -157,7 +157,7 @@ void MainWindow::on_actionExporter_en_html_triggered()
 
     Zstream << "<!DOCTYPE html> <html> <head> <title> " + Ztitle + "</title> </head> <body>" + "\n";
 
-    // intro
+    // infos parcours
 
     Zstream << "<h2>Ville : " << Zcity << "</h2>";
     Zstream << "<h2>Département : " << Zdept << "</h2>";
@@ -165,7 +165,17 @@ void MainWindow::on_actionExporter_en_html_triggered()
     Zstream << "<h2>Durée : " << Ztime<< "h</h2>";
     Zstream << "<h2>Longueur : " << Zlength << "km</h2>";
 
-    Zstream << "\n</body> </html>";
+
+    Zstream << "<h1> Intro </h1>";
+
+    // intro
+
+    for (int i = 0; i < vectTextIntro.size(); i++) {
+        Zstream << "<h2>" + vectComboIntro[i]->currentText() + "</h2>";
+        Zstream << "<p>" + vectTextIntro[i]->toPlainText() + "</p>";
+    }
+
+    Zstream << "\n</body> </html>\n\n";
 
     Zfile.close();
 }
