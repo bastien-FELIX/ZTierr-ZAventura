@@ -122,26 +122,18 @@ QString MainWindow::ZimageToHtml()
 
 void MainWindow::on_actionExporter_triggered()
 {
-    QString Ztitle = ui->lineEdit->displayText();
-    QString Zcity = ui->lineEdit_2->displayText();
-    QString Zdept = ui->lineEdit_3->displayText();
-    QString Ztime = ui->lineEdit_4->displayText();
-    QString Zdifficulty = QString::number(ui->spinBox->value());
-    QString Zlength = ui->lineEdit_5->displayText();
+    QString fileName = QFileDialog::getSaveFileName(this,
+                                                    tr("Open File"), QDir::currentPath());
+    if (!fileName.isEmpty()) {
+        QFile saveFile(fileName);
 
-    QFile Zfile(QFileDialog::getOpenFileName(this, "ZOpen Ze Zfile"));
+        if (!saveFile.open(QIODevice::WriteOnly)) {
+            qWarning("Couldn't open save file.");
+        }
 
-    if (!Zfile.open(QIODevice::WriteOnly | QFile::Text)) {
-        QMessageBox::warning(this, "Warning", "Le Z a volé le fichier: " + Zfile.errorString());
-        return;
+        QJsonObject json = toJson();
+        saveFile.write(QJsonDocument(json).toJson());
     }
-
-    QTextStream Zstream(&Zfile);
-
-    Zstream << Ztitle + "\n" + Zcity + "\n" + Zdept + "\n" + Zdifficulty + "\n" + Ztime + "\n"
-                   + Zlength + "\n" + Zimage;
-
-    Zfile.close();
 }
 
 void MainWindow::on_actionExporter_en_html_triggered()
@@ -170,4 +162,52 @@ void MainWindow::on_actionExporter_en_html_triggered()
     Zstream << "\n</body> </html>";
 
     Zfile.close();
+}
+
+QJsonObject MainWindow::toJson() const
+{
+    QJsonObject json;
+    json["ztitl"] = ui->lineEdit->displayText();
+    json["zcity"] = ui->lineEdit_2->displayText();
+    json["zdept"] = ui->lineEdit_3->displayText();
+    json["ztime"] = ui->lineEdit_4->displayText();
+    json["zdiff"] = QString::number(ui->spinBox->value());
+    json["zleng"] = ui->lineEdit_5->displayText();
+    return json;
+}
+
+void MainWindow::fromJson(const QJsonObject &json)
+{
+    if (const QJsonValue v = json["ztitl"]; v.isString())
+        ui->lineEdit->setText(v.toString());
+    if (const QJsonValue v = json["zcity"]; v.isString())
+        ui->lineEdit_2->setText(v.toString());
+    if (const QJsonValue v = json["zdept"]; v.isString())
+        ui->lineEdit_3->setText(v.toString());
+    if (const QJsonValue v = json["ztime"]; v.isString())
+        ui->lineEdit_4->setText(v.toString());
+    if (const QJsonValue v = json["zdiff"]; v.isString())
+        ui->spinBox->setValue(v.toInt());
+    if (const QJsonValue v = json["zleng"]; v.isString())
+        ui->lineEdit_5->setText(v.toString());
+}
+
+void MainWindow::loadSave()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    tr("Open File"), QDir::currentPath());
+    if (!fileName.isEmpty()) {
+        QFile loadFile(fileName);
+        if (!loadFile.open(QIODevice::ReadOnly)) {
+            qWarning("Couldn't open save file.");
+        }
+        QByteArray saveData = loadFile.readAll();
+        QJsonDocument loadDoc(QJsonDocument::fromJson(saveData));
+        fromJson(loadDoc.object());
+    }
+}
+
+void MainWindow::on_actionImporter_triggered()
+{
+    loadSave();
 }
