@@ -2,12 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QFileDialog>
-#include <QMessageBox>
-#include <QComboBox>
-#include <QTextEdit>
-#include <QGridLayout>
-#include <QScrollArea>
+#include <qcombobox.h>
+#include <qgridlayout.h>
+#include <qtextedit.h>
+#include <vector>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -24,15 +22,18 @@ public:
     ~MainWindow();
     std::vector<QComboBox*> vectComboIntro;
     std::vector<QTextEdit*> vectTextIntro;
+    std::vector<QTextEdit*> vectTextEtapes;
+    std::vector<QComboBox*> vectComboEtapes;
     QGridLayout* introLayout;
+    QGridLayout* etapesLayout;
     QString ZimageToHtml();
 
 private slots:
-    void on_pushButton_clicked();
+
     void on_btPlusIntro_clicked();
 
     void on_actionExporter_triggered();
-    void on_actionImporter_triggered();
+
     void on_actionExporter_en_html_triggered();
 
 private:
