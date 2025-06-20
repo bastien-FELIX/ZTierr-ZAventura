@@ -143,7 +143,7 @@ void MainWindow::on_actionExporter_en_html_triggered()
     QString Zcity = ui->lineEdit_2->displayText();
     QString Zdept = ui->lineEdit_3->displayText();
     QString Ztime = ui->lineEdit_4->displayText();
-    QString Zdifficulty = QString::number(ui->spinBox->value());
+    int Zdifficulty = ui->spinBox->value();
     QString Zlength = ui->lineEdit_5->displayText();
 
     QFile Zfile(QFileDialog::getOpenFileName(this, "ZOpen Ze Zfile"));
@@ -161,7 +161,14 @@ void MainWindow::on_actionExporter_en_html_triggered()
 
     Zstream << "<h2>Ville : " << Zcity << "</h2>";
     Zstream << "<h2>Département : " << Zdept << "</h2>";
-    Zstream << "<h2>Difficulté : " << Zdifficulty << "/5</h2>";
+    Zstream << "<h2>Difficulté : ";
+
+    for (int i = 0; i < Zdifficulty; i++) {
+        Zstream << "*";
+    }
+
+    Zstream << "</h2>";
+
     Zstream << "<h2>Durée : " << Ztime<< "h</h2>";
     Zstream << "<h2>Longueur : " << Zlength << "km</h2>";
 
