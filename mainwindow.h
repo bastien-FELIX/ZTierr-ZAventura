@@ -2,6 +2,13 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QJsonObject>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QScrollArea>
+#include <QSizePolicy>
+#include <QInputDialog>
+#include <QCloseEvent>
 #include <qcombobox.h>
 #include <qgridlayout.h>
 #include <qtextedit.h>
@@ -21,17 +28,16 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    std::vector<QComboBox*> vectComboIntro;
-    std::vector<QTextEdit*> vectTextIntro;
-    std::vector<QTextEdit*> vectTextEtapes;
-    std::vector<QComboBox*> vectComboEtapes;
-    QGridLayout* introLayout;
-    QGridLayout* etapesLayout;
+    std::vector<QComboBox *> vectComboIntro;
+    std::vector<QTextEdit *> vectTextIntro;
+    std::vector<QTextEdit *> vectTextEtapes;
+    std::vector<QComboBox *> vectComboEtapes;
+    QGridLayout *introLayout;
+    QGridLayout *etapesLayout;
     QString ZimageToHtml();
     QJsonObject toJson() const;
     void fromJson(const QJsonObject &json);
     void loadSave();
-    void toHTML();
 
 private slots:
 
@@ -43,8 +49,11 @@ private slots:
 
     void on_actionImporter_triggered();
 
+    void on_actionPersonnage_triggered();
+
 private:
     Ui::MainWindow *ui;
     QString Zimage;
+    void closeEvent(QCloseEvent *event) override;
 };
 #endif // MAINWINDOW_H

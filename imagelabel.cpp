@@ -1,12 +1,13 @@
 #include "imagelabel.h"
 
-imageLabel::imageLabel(QWidget* parent, Qt::WindowFlags f)
-: QLabel(parent) {
-}
+imageLabel::imageLabel(QWidget *parent, Qt::WindowFlags f)
+    : QLabel(parent)
+{}
 
 imageLabel::~imageLabel() {}
 
-void imageLabel::mousePressEvent(QMouseEvent* event) {
+void imageLabel::mousePressEvent(QMouseEvent *event)
+{
     open();
 }
 
@@ -34,8 +35,11 @@ void imageLabel::open()
     if (!fileName.isEmpty()) {
         QImage image(fileName);
         if (image.isNull()) {
-            QMessageBox::information(this, tr("Image Viewer"),
-                                     tr("Cannot load %1.").arg(fileName));
+            QMessageBox::information(
+                this,
+                tr("Sacré Z"),
+                tr("Le Z a volé ce format de fichier. Merci d'entrer un fichier au format valide.")
+                    .arg(fileName));
             if (path.length() > 0) {
                 path = QFileDialog::getOpenFileName(this,
                                                         tr("Open File"), QDir::currentPath());
@@ -44,9 +48,9 @@ void imageLabel::open()
             return;
         }
         QPixmap tmp = QPixmap::fromImage(image);
-
         this->setPixmap( tmp.scaled( this->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation) );
 
         path = fileName;
     }
 }
+

@@ -1,4 +1,3 @@
-#include <QFileDialog>
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "QLabel"
@@ -13,43 +12,39 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     /******************************************* INTRO TAB *******************************************/
-    introLayout=new QGridLayout();
+    introLayout = new QGridLayout();
 
+    QLabel *l = new QLabel("Icone (Qui parle ?)");
+    QComboBox *cb = new QComboBox();
 
+    QGridLayout *gl = new QGridLayout();
+    QGridLayout *gl2 = new QGridLayout();
 
-    QLabel *l=new QLabel("Icone (Qui parle ?)");
-    QComboBox *cb=new QComboBox();
-
-    QGridLayout *gl =new QGridLayout();
-    QGridLayout *gl2 =new QGridLayout();
-
-    QSpacerItem *sp=new QSpacerItem(0,0, QSizePolicy::Expanding);
-    QLabel *l2=new QLabel("Dialogue :");
-    QTextEdit* te=new QTextEdit();
+    QSpacerItem *sp = new QSpacerItem(0, 0, QSizePolicy::Expanding);
+    QLabel *l2 = new QLabel("Dialogue :");
+    QTextEdit *te = new QTextEdit();
     te->setMinimumHeight(100);
 
-    gl->addWidget(l,0,0);
-    gl->addWidget(cb,0,1);
-    gl->addItem(sp,0,2);
+    gl->addWidget(l, 0, 0);
+    gl->addWidget(cb, 0, 1);
+    gl->addItem(sp, 0, 2);
+    cb->addItem("Le Z");
 
     vectComboIntro.push_back(cb);
     vectTextIntro.push_back(te);
 
-
-
-    introLayout->addLayout(gl,0,0);
+    introLayout->addLayout(gl, 0, 0);
     gl2->addWidget(l2, 0, 0);
-    gl2->addWidget(te, 0,1);
+    gl2->addWidget(te, 0, 1);
 
-    introLayout->addLayout(gl2,1,0);
+    introLayout->addLayout(gl2, 1, 0);
 
-    QWidget* introWidget = new QWidget();
+    QWidget *introWidget = new QWidget();
     introWidget->setLayout(introLayout);
 
     QScrollArea *scrollArea = new QScrollArea();
     scrollArea->setWidgetResizable(true);
     scrollArea->setWidget(introWidget);
-
 
     /******************************************* ETAPES TAB *******************************************/
 
@@ -62,15 +57,11 @@ MainWindow::MainWindow(QWidget *parent)
     // QLineEdit *lncoordEO=new QLineEdit();
 
     // QGridLayout *titleLayout=new QGridLayout();
-    
+
     // titleLayout->addWidget(le,0,0);
     // titleLayout->addWidget(t,1,0);
     // titleLayout->addWidget(comboNS,2,0);
     // titleLayout->addWidget(lncoordNS,3,0);
-    
-
-
-
 
     // QWidget* etapesWidget = new QWidget();
     // etapesWidget->setLayout(etapesLayout);
@@ -79,23 +70,15 @@ MainWindow::MainWindow(QWidget *parent)
     // scrollAreaEtapes->setWidgetResizable(true);
     // scrollAreaEtapes->setWidget(etapesWidget);
 
-
     ui->setupUi(this);
     // ui->gridLayoutEtapes->addWidget(scrollAreaEtapes);
     ui->gridLayoutIntroDialogue->addWidget(scrollArea);
-
-
-
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-
 }
-
-
-
 
 // void on_pushbutton_clicked()
 // {
@@ -106,36 +89,39 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_btPlusIntro_clicked()
 {
+    QLabel *l = new QLabel("Icone (Qui parle ?)");
+    QComboBox *cb = new QComboBox();
 
-    QLabel *l=new QLabel("Icone (Qui parle ?)");
-    QComboBox *cb=new QComboBox();
+    QGridLayout *gl = new QGridLayout();
+    QGridLayout *gl2 = new QGridLayout();
 
-    QGridLayout *gl =new QGridLayout();
-    QGridLayout *gl2 =new QGridLayout();
-
-    QSpacerItem *sp=new QSpacerItem(0,0, QSizePolicy::Expanding);
-    QLabel *l2=new QLabel("Dialogue :");
-    QTextEdit* te=new QTextEdit();
+    QSpacerItem *sp = new QSpacerItem(0, 0, QSizePolicy::Expanding);
+    QLabel *l2 = new QLabel("Dialogue :");
+    QTextEdit *te = new QTextEdit();
     te->setMinimumHeight(100);
 
-    gl->addWidget(l,0,0);
-    gl->addWidget(cb,0,1);
-    gl->addItem(sp,0,2);
+    gl->addWidget(l, 0, 0);
+    gl->addWidget(cb, 0, 1);
+    gl->addItem(sp, 0, 2);
+
+    for (int i = 0; i < vectComboIntro[0]->count(); i++) {
+        cb->addItem(vectComboIntro[0]->itemText(i));
+    }
 
     vectComboIntro.push_back(cb);
     vectTextIntro.push_back(te);
 
-
     int line = introLayout->rowCount();
 
-    introLayout->addLayout(gl,line,0);
+    introLayout->addLayout(gl, line, 0);
     gl2->addWidget(l2, 0, 0);
-    gl2->addWidget(te, 0,1);
+    gl2->addWidget(te, 0, 1);
 
-    introLayout->addLayout(gl2,line+1,0);
+    introLayout->addLayout(gl2, line + 1, 0);
 }
 
-QString MainWindow::ZimageToHtml() {
+QString MainWindow::ZimageToHtml()
+{
     return "<img src=\"" + Zimage + "\" width=\"400\" height=\"500\" />";
 }
 
@@ -155,18 +141,16 @@ void MainWindow::on_actionExporter_triggered()
     }
 }
 
-
-
 void MainWindow::on_actionExporter_en_html_triggered()
 {
     QString Ztitle = ui->lineEdit->displayText();
     QString Zcity = ui->lineEdit_2->displayText();
     QString Zdept = ui->lineEdit_3->displayText();
     QString Ztime = ui->lineEdit_4->displayText();
-    QString Zdifficulty = QString::number(ui->spinBox->value());
+    int Zdifficulty = ui->spinBox->value();
     QString Zlength = ui->lineEdit_5->displayText();
 
-    QFile Zfile(QFileDialog::getOpenFileName(this, "ZOpen Ze Zfile"));
+    QFile Zfile(QFileDialog::getSaveFileName(this, "ZOpen Ze Zfile"));
 
     if (!Zfile.open(QIODevice::WriteOnly | QFile::Text)) {
         QMessageBox::warning(this, "Warning", "Le Z a volé le fichier: " + Zfile.errorString());
@@ -175,14 +159,46 @@ void MainWindow::on_actionExporter_en_html_triggered()
 
     QTextStream Zstream(&Zfile);
 
-    Zstream << "<!DOCTYPE html> <html> <head> <title> " + Ztitle + "</title> </head> <body>" + "\n";
+    Zstream << "<!DOCTYPE html> <html> <head> <title> " + Ztitle + "</title> </head> <body>\n";
+    Zstream << "<h2>Ville : " << Zcity << "</h2>";
+    Zstream << "<h2>Département : " << Zdept << "</h2>";
+    Zstream << "<h2>Difficulté : ";
 
-    Zstream << Ztitle + " " + Zcity + "\n" + Zdept + "\n" + Zdifficulty + "\n" + Ztime + "\n" + Zlength + "\n" + ZimageToHtml();
+    for (int i = 0; i < Zdifficulty; i++) {
+        Zstream << "*";
+    }
 
-    Zstream << "\n</body> </html>";
+    Zstream << "</h2>";
 
+    Zstream << "<h2>Durée : " << Ztime << "h</h2>";
+    Zstream << "<h2>Longueur : " << Zlength << "km</h2>";
+
+    Zstream << "<h1> Intro </h1>";
+
+    // intro
+
+    for (int i = 0; i < vectTextIntro.size(); i++) {
+        Zstream << "<h2>" + vectComboIntro[i]->currentText() + "</h2>";
+        Zstream << "<p>" + vectTextIntro[i]->toPlainText() + "</p>";
+    }
+
+    // about
+
+    Zstream << "<h1>A propos</h1>";
+
+    Zstream << "<h2>Organisation : " + ui->lineEdit_orga->displayText() + "</h2>";
+    Zstream << "<h2>Adresse : " + ui->lineEdit_adresse->displayText() + "</h2>";
+    Zstream << "<h2>Code postal & Ville : " + ui->lineEdit_ville->displayText() + "</h2>";
+    Zstream << "<h2>Num. téléphone : " + ui->lineEdit_tel->displayText() + "</h2>";
+    Zstream << "<h2>Adresse e-mail : " + ui->lineEdit_mail->displayText() + "</h2>";
+    Zstream << "<h2>Site web : <a href=\"" + ui->lineEdit_web->displayText() + "\">"
+                   + ui->lineEdit_web->displayText() + "</a> </h2>";
+
+    Zstream << "\n</body> </html>\n\n";
     Zfile.close();
 }
+
+    // infos parcours
 
 QJsonObject MainWindow::toJson() const
 {
@@ -319,4 +335,30 @@ void MainWindow::loadSave()
 void MainWindow::on_actionImporter_triggered()
 {
     loadSave();
+}
+
+void MainWindow::on_actionPersonnage_triggered()
+{
+    bool ok;
+    QString text = QInputDialog::getText(this, tr("Le Z demande une nouvelle victime"), tr("Entrez zun nom de personnage"), QLineEdit::Normal, "", &ok);
+    if (ok && !text.isEmpty())
+    {
+        for (auto elem : vectComboIntro) {
+            elem->addItem(text);
+        }
+    }
+}
+
+void MainWindow::closeEvent(QCloseEvent *event) {
+    QMessageBox::StandardButton resBtn = QMessageBox::question(
+        this, tr("Le Z te salut"),
+        tr("Le Z te remercie pour tes services"),
+        QMessageBox::Yes | QMessageBox::Yes,
+        QMessageBox::Yes);
+
+    if (resBtn == QMessageBox::Yes) {
+        event->accept();
+    } else {
+        event->ignore();
+    }
 }
