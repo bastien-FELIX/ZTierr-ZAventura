@@ -3,6 +3,12 @@
 
 #include <QMainWindow>
 #include <QJsonObject>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QScrollArea>
+#include <QSizePolicy>
+#include <QInputDialog>
+#include <QCloseEvent>
 #include <qcombobox.h>
 #include <qgridlayout.h>
 #include <qtextedit.h>
@@ -42,8 +48,11 @@ private slots:
 
     void on_actionImporter_triggered();
 
+    void on_actionPersonnage_triggered();
+
 private:
     Ui::MainWindow *ui;
     QString Zimage;
+    void closeEvent(QCloseEvent *event) override;
 };
 #endif // MAINWINDOW_H
