@@ -54,7 +54,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QString Zimage;
     void closeEvent(QCloseEvent *event) override;
 };
 #endif // MAINWINDOW_H
